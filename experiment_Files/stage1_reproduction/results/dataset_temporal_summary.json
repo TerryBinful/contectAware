@@ -1,0 +1,42 @@
+{
+  "n_users": 60,
+  "total_rows": 377346,
+  "total_span_hours": 13505.198333333336,
+  "total_recorded_hours_if_1min": 6289.1,
+  "all_gaps": 377286,
+  "gap_median": 60.0,
+  "gap_frac_eq_60": 0.6328196646575808,
+  "gap_frac_59_61": 0.7101323664275907,
+  "gap_frac_lt_59": 0.11628048748164523,
+  "gap_frac_gt_90": 0.05458458569891276,
+  "min_gap": 1.0,
+  "gap_histogram": {
+    "[0.0, 1.0)": 0,
+    "[1.0, 30.0)": 8434,
+    "[30.0, 59.0)": 35437,
+    "[59.0, 60.0)": 10182,
+    "[60.0, 61.0)": 238754,
+    "[61.0, 90.0)": 62902,
+    "[90.0, 300.0)": 18706,
+    "[300.0, 3600.0)": 2414,
+    "[3600.0, 86400.0)": 429,
+    "[86400.0, 1000000000000.0)": 28
+  },
+  "users_not_sorted": 0,
+  "total_duplicate_ts": 0,
+  "group_all_missing_mean_over_users": {
+    "raw_acc": 0.0007710309749042154,
+    "proc_gyro": 0.05179107400054931,
+    "raw_magnet": 0.09063576507804584,
+    "watch_acceleration": 0.37037078490652064,
+    "watch_heading": 0.6222475660776404,
+    "location": 0.12350941748526947,
+    "audio": 0.025590077835006098,
+    "discrete": 0.0,
+    "lf_measurements": 0.0007964903736747419
+  },
+  "users_with_watch_acc_absent_gt_95pct": 6,
+  "rows_min": 1600,
+  "rows_max": 11996,
+  "rows_median": 6312.5
+}

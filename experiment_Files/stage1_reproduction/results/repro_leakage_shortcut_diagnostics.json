@@ -1,0 +1,22 @@
+{
+  "impostor_test_rows": 73071,
+  "impostor_test_frac_altitude_missing": 0.4380534001176937,
+  "FAR_impostor_rows_altitude_missing": 0.0,
+  "FAR_impostor_rows_altitude_present": 0.00940041887876869,
+  "share_of_false_accepts_with_altitude_present": 1.0,
+  "target_rows_frac_altitude_missing": 0.0,
+  "test_rows_with_adjacent_train_frame_le90s": 0.932940241155426,
+  "target_test_rows_with_adjacent_train_frame_le90s": 0.957065443934973,
+  "impostor_users_in_test": 59,
+  "impostor_users_in_test_also_in_train": 59,
+  "genuine_stream_frac_p_in_0.4_0.6": 0.028426142047349116,
+  "genuine_stream_frac_p_lt_0.4": 0.030510170056685562,
+  "genuine_stream_p_quantiles": {
+    "0.01": 0.16019179911723638,
+    "0.05": 0.5436555626717439,
+    "0.1": 0.7828147824837993,
+    "0.5": 0.9958210391396405
+  },
+  "genuine_stream_gap_median_s": 60.0,
+  "hyst_TTT_3_frames_equals_seconds_median": 180.0
+}

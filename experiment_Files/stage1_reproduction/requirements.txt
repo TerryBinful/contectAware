@@ -1,0 +1,7 @@
+# Pinned to match versions printed by the original Colab notebooks where known.
+numpy==2.0.2
+pandas==2.2.2
+scikit-learn==1.6.1
+imbalanced-learn==0.13.0   # original version NOT recorded (unpinned pip install)
+scipy==1.18.1              # original version NOT recorded
+psutil
