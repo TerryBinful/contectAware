@@ -1,0 +1,52 @@
+# Stabilising Continuous Authentication Systems Using Telecom-Inspired Hysteresis-Based Decision Logic
+
+Name: [Your Name]
+Student ID: [Your Student ID]
+Word Count: ~4900
+
+## Abstract
+
+This paper investigates how research design choices influence the quality, validity, and real-world impact of Computer Science research, using continuous authentication systems as a case study.
+
+## Introduction
+
+Continuous authentication has emerged as a promising approach for enhancing security in mobile and ubiquitous computing environments.
+
+## Problem Statement
+
+Despite advances in machine learning-based authentication, practical deployments continue to suffer from decision instability.
+
+## Aim
+
+The aim of this research is to investigate whether telecom-inspired hysteresis-based decision mechanisms can stabilise continuous authentication systems.
+
+## Objectives
+
+1. Analyse instability in continuous authentication decisions.
+2. Design a hysteresis-based decision framework.
+3. Evaluate stability using temporal metrics.
+
+## Research Questions
+
+RQ1: How do decision-level design choices affect authentication stability?
+RQ2: Can hysteresis reduce ping-pong effects without sacrificing accuracy?
+
+## Justification
+
+This research is justified by the growing deployment of context-aware authentication systems.
+
+## Literature Review
+
+Recent studies in continuous authentication focus heavily on classifier accuracy.
+
+## Methodology
+
+This study adopts an experimental research design using real-world sensor data.
+
+## Conclusion
+
+This research demonstrates that instability in continuous authentication is often a design failure rather than a modelling failure.
+
+## References
+
+References will be formatted in APA (7th edition) and limited to works published within the past five years.

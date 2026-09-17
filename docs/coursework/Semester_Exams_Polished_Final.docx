@@ -1,0 +1,138 @@
+# Language-Polished Final Version
+
+Introduction
+
+A Hysteresis-based authentication model that leverages temporal behavioural patterns and sensor fusion to achieve robust, low-overhead continuous authentication. 
+The computational and statistical challenges, specifically the sensor noise (Veracity) and high-frequency state changes (Velocity), create an environment prone to the 'Ping-Pong Effect,' where a naive authentication system would rapidly toggle between Locked and Unlocked states. This failure mode precisely mirrors the instability faced by cellular networks at the cell edge. Therefore, to overcome these specific data characteristics, the research proposes adopting the Hard Handoff protocol from telecommunications. By implementing a Hysteresis-based decision engine (utilizing the Time-to-Trigger and Margin concepts), we aim to stabilize the authentication decision in this noisy, high-velocity environment, just as cellular networks stabilize signal transitions
+
+To rigorously evaluate the proposed approach, this study utilizes the ExtraSensory Dataset. A dataset that captures (1) naturalistic, long-duration behaviour data; (2) multi-modal sensor streams from mobile and wearable devices; (3) sufficient temporal granularity to assess authentication decisions at sub-minute intervals; and (4) real-world noise and variability that stress-tests model robustness.
+
+The ExtraSensory Dataset: Overview
+
+The ExtraSensory Dataset, developed by the Context-Integrated Computing Lab at the University of California, San Diego, represents a comprehensive repository of behaviour context data collected from real-world mobile and wearable device usage . Unlike controlled laboratory datasets, ExtraSensory captures authentic user behaviour across diverse contexts, making it particularly suitable for evaluating authentication systems designed for real-world deployment.
+
+Dataset Composition and Scale
+
+The dataset contains sensor measurements and contextual labels collected from 60 participants over extended periods, resulting in more than 300,000 minutes (approximately 5,000 hours) of continuous data . Each participant contributed sensor readings from their personal smartphones and/or smartwatches during normal daily activities, ensuring ecological validity. The data collection methodology preserved natural behaviour patterns, including temporal variations, environmental changes, and the inherent unpredictability of real-world contexts.
+
+Table 1 summarizes the core technical dimensions of the dataset:
+
+Sensor Modalities and Feature Extraction
+
+The dataset incorporates readings from multiple sensor types embedded in smartphones and smartwatches:
+
+Inertial Measurement Units (IMUs): Accelerometer, gyroscope, and magnetometer data capturing device motion and orientation
+
+Location Sensors: GPS coordinates and derived features (speed, heading)
+
+Environmental Sensors: Ambient light, audio features (spectral characteristics, not raw audio for privacy)
+
+Network Context: Wi-Fi and cellular connectivity information
+
+Device State: Battery level, screen status, application usage patterns
+
+From these raw sensor streams, researchers extracted 225 statistical and frequency-domain features per 20-second window, including mean, variance, spectral energy, zero-crossing rates, and correlation coefficients across sensor axes . This feature-level representation balances computational efficiency with information richness, making it suitable for real-time authentication systems.
+
+Dataset Relevance to Hysteresis-Based Authentication
+
+Alignment with Research Objectives
+
+The ExtraSensory Dataset directly supports the evaluation of Hysteresis-based authentication through several key characteristics.
+
+Temporal Granularity and Hysteresis Modelling: The ExtraSensory Dataset directly supports the evaluation of Hysteresis-based authentication by providing a temporal structure conducive to stability analysis. The dataset’s 20-second sampling interval offers sufficient granularity to model the temporal dynamics central to our proposed Time-to-Trigger (TTT) mechanism. Authentic behaviour is rarely static; it fluctuates. This dataset allows us to quantify the trade-off between responsiveness (detecting a new user quickly) and stability (ignoring transient anomalies), a balance that standard static-threshold models fail to achieve but which Hysteresis explicitly optimizes.
+
+Multi-Modal Fusion Capabilities: Hysteresis-based authentication benefits significantly from the fusion of complementary behaviour signals. The dataset’s diverse sensor modalities (Magnetometer, Audio, WiFi) enable a rigorous investigation into how signal entropy varies across different physical domains. This allows us to tune the hysteresis parameters (e.g., the “Unlock Margin”) differently for a stable signal (Magnetometer) versus a volatile one (WiFi RSSI), thereby optimizing the overall Trust Score confidence.
+
+Real-World Behaviour Variability: The naturalistic data collection captures the full spectrum of behaviour entropy that production systems must withstand: gradual behaviour drift, sudden context transitions, and erratic sensor noise. This uncontrolled environment provides a critical “Stress Test” for the proposed approach model, validating its robustness in scenarios where clean, laboratory-generated data would fail to expose the “Ping-Pong” locking vulnerabilities.
+
+Benchmarking and Extensibility: This dataset serves as a standard benchmark for Context-Aware Computing, enabling the results of this research to be directly compared against existing baselines in the literature. Furthermore, the availability of deep raw sensor logs (IMU, Watch sensors) ensures the extensibility of this research. It permits future pivots toward “Gait Analysis” or “Cross-Device Handoff” (Watch-to-Phone) without necessitating a new data collection protocol, thus maximizing the long-term research value of the selected source.
+
+Big Data Characteristics
+
+Although the MSc Project utilizes the extracted feature data for benchmarking and computational feasibility, the entire/extended dataset fundamentally address the Big Data characteristics. The data could be present relevant scalability for continuous authentication systems and further sensor fusion studies.
+
+Volume: While the extracted feature set is compressed for storage efficiency, it represents a massive temporal volume of over 300,000 minutes (over 5,000 hours) of continuous sensor logs. This longitudinal depth is critical; it allows for the evaluation of the Hysteresis algorithm over periods of days and weeks, rather than just seconds, ensuring that long-term concept drift is adequately modelled.
+
+Velocity: The dataset originates from a high-velocity stream, where underlying sensors sample at rates between 40Hz (Motion) and 22kHz (Audio), aggregated into 20-second decision windows (Vaizman et al., 2017). In live deployments, the Handoff algorithm must achieve an inference latency of less than 1 second to avoid user-perceptible delays . This velocity constraint justifies the methodological choice of using lightweight feature vectors over raw waveforms, effectively reducing system load while maintaining real-time responsiveness.
+
+Variety: The dataset exhibitss extreme heterogeneity across multiple dimensions, necessitating sophisticated fusion techniques. It fuses 225 heterogeneous features from 9 distinct modalities (including kinematic motion, acoustic pressure, and location), requiring complex alignment.
+
+Veracity: Unlike clean laboratory datasets, this data was collected from users engaging in their usual real-life activities introducing significant veracity issues into the data, it contains significant noise and systematic missingness (16.5% missing data rate). It provides a rigorous stress and to ensure that any trained model will be stable even when the input data is unreliable such when in unpredictable, non-stationary environment.
+
+Table below shows a graphical representation of the Big Data characteristics of the dataset.
+
+Justification of Non-Triviality
+
+The ExtraSensory Dataset presents specific technical complexities that render standard “off-the-shelf” machine learning algorithms ineffective. These challenges necessitate the specialized Hysteresis-based modelling proposed in this research.
+
+Feature Sparsity and Sensor Heterogeneity: Unlike standard tabular datasets where all features are present, this dataset suffers from systematic missingness. As noted by Vaizman et al. (2017), sensor availability varies by hardware (device heterogeneity) and user context (e.g., audio is unavailable during phone calls; GPS is disabled to save battery). Standard classifiers like SVMs, Random Forests cannot natively handle dynamic feature absence without introducing complex imputation strategies or utilizing robust multi-modal fusion architectures that can operate on partial vectors.
+
+Selection Bias and Generalization Challenges: The dataset exhibitss significant demographic selection bias, with the majority of subjects being university students with age range of 18 – 42 years, with an average of 24.7 years old, this creates a Domain Shift problem. A standard model trained on this specific cohort will overfit to “student-like” behavioural patterns (irregular sleep schedules, campus mobility) and fail to generalize to a broader population. Overcoming this requires non-trivial techniques such as Transfer Learning or Domain Adaptation to ensure the authentication model remains valid for diverse user groups.
+
+Class Imbalance (The “Student Routine” Bias): Due to the student centric population, the dataset is heavily skewed towards specific contexts such as “In Class” and “Lab Work” while under-representing others. To prevent the model from becoming biased toward these majority classes, standard training procedures must be augmented with sampling techniques such as SMOTE.
+
+Question 2
+
+Critical Analysis of Big Data Implementation Challenges
+
+Practical implementation of the ExtraSensory dataset revealed significant computational and statistical challenges. The obstacles encountered during data ingestion and preprocessing further validate the non-trivial nature of the research problem, demonstrating that sophisticated engineering approaches were required beyond standard off-the-shelf machine learning pipelines. To facilitate reproducible, cloud-native analysis, the dataset was integrated into the Google Cloud ecosystem (utilizing Google Drive for storage and Google Colab for compute).
+
+Data Engineering & Big Data Challenges
+
+Data Ingestion and Preprocessing Constraints
+
+The data ingestion pipeline involved aggregating 60 individually compressed user files into a unified tensor.
+
+Observed Runtime Behaviour: Contrary to initial "Big Data" volume concerns, the complete dataset (377,000 rows) was successfully loaded into memory using a direct concatenation strategy (pd.concat). The primary constraint observed was not storage capacity, but I/O Latency. Reading and parsing the file structure required significant overhead compared to a monolithic binary format, resulting in an ingestion time of approximately 45 seconds for just 60 users.
+
+System Limitation: While the 12GB RAM environment was sufficient, linear projection indicates that the pd.concat approach would hit a hard memory ceiling at approximately 600 users, validating the need for distributed processing in future production deployments.
+
+Solutions: A NVIDIA Tesla T4 GPU runtime was used instead of the default Intel Xeon CPU runtime offered in Google Colab.  T4 GPU is widely used for deep learning tasks, especially for model inference. The T4 GPU is based on the Turing architecture and offers significant computational power.
+
+To reduce the system load, the csv file in each compressed user file was extracted beforehand and loaded onto storage of the runtime, this proactive activity significantly reduced the time required to decompress the files during actual analysis.
+
+Additionally, the files were uploaded in batches  with some selected features based on most important features for authentication and  domain knowledge for behavioural biometrics to reduce system load as shown if the figure below.
+
+Data imbalance, sparsity, noise, or missingness
+
+The most significant statistical challenge was the extreme skew in class distribution and sensor availability.
+
+Missingness Analysis To determine the degree of dataset integrity, a missing data analysis was conducted on the full feature set (d = 225). The analysis revealed that two location-based features (location:min_speed and location:max_speed) exhibited 72.3% missingness, significantly exceeding the 50% tolerance threshold. Consequently, these were dropped, and the feature space was pruned to 101 high-quality features. The figure below shows the results of the analysis.
+
+Imbalance and Sparsity Analysis: The dataset exhibitsed a severe 1:30.5 imbalance ratio, with only 11,996 (3.18%) samples belonging to the target "Legitimate" class compared to 365,350 (96.82%) "Impostor" samples. A naive baseline model achieved 96.8% accuracy simply by predicting the majority class but failed to detect a single legitimate transition (Recall = 0.0). Furthermore, systematic missingness was observed, with 15.3% of records lacking Watch Accelerometer data due to device charging cycles.
+
+Strategy Applied (SMOTE & Imputation): Median imputation was applied to the 101 selected features, successfully resolving 100% of the remaining NaN values.
+
+SMOTE (Synthetic Minority Over-sampling Technique) was implemented to upsample the minority class. This balanced the training distribution to 1:1, enabling the final Gradient Boosting model to achieve 99.26% Accuracy with a False Reject Rate (FRR) of only 7.09%, proving the model successfully learned the minority class patterns rather than collapsing into a majority-class predictor.
+
+Question 3
+
+Feature Engineering
+
+To enable robust Hysteresis-based authentication, the feature engineering strategy focused on features could be processed with minimal system load which included transforming raw, noisy sensor streams into stable, orientation-invariant representations.  This process involved two distinct representation techniques followed by an automated selection phase using Random Forest. However due to the values of the features will be somewhat unavailable or could be spiked due to the real-life implementation, the techniques was important to maintain the integrity of that dataset.
+
+Physics-Based Representation (Signal Magnitude)
+
+Raw accelerometer and gyroscope data are typically provided as 3-axis vectors (x, y, z). These Cartesian coordinates were already computed into a single Signal Magnitude Vector (SMV) using the Euclidean norm: SMV =  by the authors (Vaizman et al.), (e,g [raw_acc:magnitude_stats:mean] and [raw_acc:magnitude_stats:percentile25])
+
+In real-world authentication, users hold their phones in infinite orientations when typing, taking pictures, reading, to mention few. Raw accelerometer and gyroscope values are highly sensitive to device rotation. The Magnitude computed with Euclidean norm is rotation-invariant, providing a stable signal of the user's intensity of motion regardless of device posture. This stability is a helpful for the Hysteresis "Time-to-Trigger" logic, which requires consistent signal inputs to avoid false state transitions.
+
+Statistical Distribution Embeddings
+
+Instead of feeding raw time-series data, each 20-second window was represented as a vector of statistical moments: Mean, Standard Deviation and Skewness which were distinct features within the dataset. Implementation was cleaning them and scaling them (Mean Imputation) so the model could use them. Examples are [proc_gyro:3d:std_z] and [raw_acc:3d:mean_z].
+
+Random Forest Gini Importance
+
+To rigorously select the most discriminative features put of 103 features (manually selected features valid for authentication), Random Forest Classifier specifically for feature ranking (distinct from the final Gradient Boosting predictor) was used.
+
+Methodology
+
+Trained a Random Forest on the 103-feature set which included the signal magnitudes and statical distributions and calculated the Gini Importance (Mean Decrease in Impurity) for each feature.
+
+The top 52 features which cumulatively captured 95% of the total information gain. Features below this threshold (contributing less than 0.1% importance) were discarded as noise.
+
+The dominance of Standard Deviation (Rank 1) and Magnitude (Rank 3, 4) in the Random Forest ranking empirically justifies the domain-based decision to use these representations. By filtering the dataset to these top 52 features, we reduced the model's computational overhead while achieving a final accuracy of 99.26%, validating that the selected features contained the necessary signal for high-fidelity authentication. The 53-feature set were the most effective for the Hysteresis model, outperforming the entire over 200 available features.
+
+These high-quality features will smoothen out transient noise spikes that would otherwise trigger the "Ping-Pong" effect in the authentication model. The image shows the
+
+Question 4
