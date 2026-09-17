@@ -1,0 +1,3 @@
+# generated artefacts that are large or environment-specific
+results/*/score_streams/
+results/dryrun/

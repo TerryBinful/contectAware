@@ -1,0 +1,46 @@
+{
+  "name": "Stage 2 PRIMARY - regular-cadence cohort, unseen impostors, feature-group ablation",
+  "seed": 20260916,
+  "expect_features": 225,
+  "expect_users": 60,
+  "cohort": "regular",
+  "regular_min_frac": 0.95,
+  "min_frames_per_user": 1500,
+  "max_gap_s": 90,
+  "split_fracs": [
+    0.6,
+    0.2,
+    0.2
+  ],
+  "n_impostor_fit": 24,
+  "n_impostor_calib": 12,
+  "impostor_train_cap": 48000,
+  "impostor_calib_cap": 24000,
+  "impostor_test_cap": 48000,
+  "feature_sets": [
+    "F1_ALL",
+    "F2_STAGE1_COMPARABLE",
+    "F3_NO_LOC_NO_DEVSTATE",
+    "F4_LOCATION_ONLY",
+    "F5_DEVICE_STATE_ONLY",
+    "F6_MISSINGNESS_ONLY"
+  ],
+  "models": {
+    "gradient_boosting": {
+      "n_estimators": 200,
+      "learning_rate": 0.1,
+      "max_depth": 6,
+      "min_samples_split": 100,
+      "min_samples_leaf": 50,
+      "subsample": 0.8,
+      "max_features": "sqrt"
+    },
+    "logistic_regression": {
+      "C": 1.0,
+      "penalty": "l2",
+      "solver": "lbfgs",
+      "max_iter": 2000,
+      "class_weight": "balanced"
+    }
+  }
+}

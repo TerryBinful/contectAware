@@ -1,0 +1,10 @@
+=== STAGE 2 === Stage 2 PRIMARY - regular-cadence cohort, unseen impostors, feature-group ablation | started 2026-09-17 22:05:59
+schema OK: 60 participants x 225 features
+participants: 31 regular (primary), 29 fragmented (secondary only)
+impostor pools: fit=24 calib=12 test=24 (disjoint)
+planned runs: 372 = 31 users x 6 feature sets x 2 models
+[1/372] 098A72A5 F1_ALL                 gradient_boosting   AUC=0.9829 EER=0.0688 FAR=0.0459 FRR=0.0961 (69s)
+[2/372] 098A72A5 F1_ALL                 logistic_regression AUC=0.9497 EER=0.1005 FAR=0.1004 FRR=0.1005 (23s)
+[3/372] 098A72A5 F2_STAGE1_COMPARABLE   gradient_boosting   AUC=0.9992 EER=0.0125 FAR=0.0339 FRR=0.0037 (35s)
+[4/372] 098A72A5 F2_STAGE1_COMPARABLE   logistic_regression AUC=0.9438 EER=0.1203 FAR=0.2016 FRR=0.0448 (13s)
+[5/372] 098A72A5 F3_NO_LOC_NO_DEVSTATE  gradient_boosting   AUC=0.9681 EER=0.1055 FAR=0.0488 FRR=0.1357 (55s)

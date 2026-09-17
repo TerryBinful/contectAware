@@ -1,0 +1,27 @@
+=== STAGE 2 === Stage 2 PILOT - small run used to validate the pipeline and measure cost | started 2026-09-17 21:56:39
+schema OK: 60 participants x 225 features
+participants: 31 regular (primary), 29 fragmented (secondary only)
+impostor pools: fit=24 calib=12 test=24 (disjoint)
+planned runs: 12 = 2 users x 3 feature sets x 2 models
+[1/12] 098A72A5 F2_STAGE1_COMPARABLE   gradient_boosting   AUC=0.9991 EER=0.0132 FAR=0.0308 FRR=0.0044 (16s)
+[2/12] 098A72A5 F2_STAGE1_COMPARABLE   logistic_regression AUC=0.9524 EER=0.0859 FAR=0.1187 FRR=0.0470 (4s)
+[3/12] 098A72A5 F3_NO_LOC_NO_DEVSTATE  gradient_boosting   AUC=0.9608 EER=0.1011 FAR=0.0750 FRR=0.1159 (16s)
+[4/12] 098A72A5 F3_NO_LOC_NO_DEVSTATE  logistic_regression AUC=0.8925 EER=0.1855 FAR=0.1774 FRR=0.1930 (3s)
+[5/12] 098A72A5 F6_MISSINGNESS_ONLY    gradient_boosting   AUC=0.8242 EER=0.3633 FAR=0.3590 FRR=0.3676 (2s)
+[6/12] 098A72A5 F6_MISSINGNESS_ONLY    logistic_regression AUC=0.8531 EER=0.3249 FAR=0.3316 FRR=0.0264 (1s)
+[7/12] 0A986513 F2_STAGE1_COMPARABLE   gradient_boosting   AUC=0.9948 EER=0.0363 FAR=0.0373 FRR=0.0290 (10s)
+[8/12] 0A986513 F2_STAGE1_COMPARABLE   logistic_regression AUC=0.9113 EER=0.1418 FAR=0.1664 FRR=0.0442 (3s)
+[9/12] 0A986513 F3_NO_LOC_NO_DEVSTATE  gradient_boosting   AUC=1.0000 EER=0.0018 FAR=0.0000 FRR=0.0088 (14s)
+[10/12] 0A986513 F3_NO_LOC_NO_DEVSTATE  logistic_regression AUC=0.9988 EER=0.0090 FAR=0.0004 FRR=0.0101 (2s)
+[11/12] 0A986513 F6_MISSINGNESS_ONLY    gradient_boosting   AUC=0.8803 EER=0.1939 FAR=0.2869 FRR=0.2083 (1s)
+[12/12] 0A986513 F6_MISSINGNESS_ONLY    logistic_regression AUC=0.8867 EER=0.1980 FAR=0.1927 FRR=0.2033 (0s)
+
+          feature_set               model  n_users  AUC_mean  EER_mean  FAR_mean  FRR_mean
+ F2_STAGE1_COMPARABLE   gradient_boosting        2  0.996922  0.024741  0.034066  0.016721
+ F2_STAGE1_COMPARABLE logistic_regression        2  0.931872  0.113827  0.142554  0.045574
+F3_NO_LOC_NO_DEVSTATE   gradient_boosting        2  0.980412  0.051427  0.037523  0.062380
+F3_NO_LOC_NO_DEVSTATE logistic_regression        2  0.945683  0.097233  0.088914  0.101529
+  F6_MISSINGNESS_ONLY   gradient_boosting        2  0.852252  0.278576  0.322964  0.287952
+  F6_MISSINGNESS_ONLY logistic_regression        2  0.869891  0.261441  0.262119  0.114848
+
+EXECUTION SUMMARY: 12 runs succeeded, 0 failed. Outputs in results/pilot
