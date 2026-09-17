@@ -1,0 +1,446 @@
+**Unified Telecom‑Inspired Stability Metrics: Continuous Authentication using Hysteresis-Based Decision Logic**
+
+A Research Paper Submitted in Partial Fulfilment of the Requirements for the Take‑Home Examination
+
+Word count: Approximately 4,100 words
+
+February 2026
+
+# ABSTRACT
+
+Continuous authentication (CA) uses passive sensing and contextual data from smartphones to verify user identity on an ongoing basis, promising stronger security with less user friction than one-time logins. However, many existing systems exhibit decision instability: small fluctuations in noisy, high-velocity sensor streams cause rapid oscillations between authenticated and unauthenticated states (the “ping-pong effect”), undermining both usability and trust. This work tests whether hysteresis-based decision logic can stabilize continuous authentication without sacrificing responsiveness or security.
+
+Rather than treating instability as purely a modelling or classification problem, this project reframes it as a methodological and design issue arising from the interaction between high-frequency, noisy sensor data and naive, instantaneous threshold decisions. To address this, we import concepts from cellular network handover, specifically “hard handover” mechanisms such as margin thresholds and Time-to-Trigger (TTT) constraints. Using the ExtraSensory dataset (60 users, >5,000 hours), we compare a naive gradient boosting model against a hysteresis-augmented model. Results demonstrate that the hysteresis layer eliminates oscillation episodes entirely (reducing them from 567 to 0) while maintaining high classification accuracy (99.26%) and improving the stability index from 0.9502 to 0.9959.
+
+Keywords: Continuous authentication, behavioural biometrics, hysteresis, decision stability, smartphone security, machine learning
+
+# INTRODUCTION
+
+he proliferation of mobile computing has made smartphones the primary repository for sensitive personal and professional data. Traditional authentication methods, such as PINs and biometric verification (fingerprint, FaceID), provide only one-time validation at the point of entry (Liang et al., 2020). Once authenticated, the device remains unlocked regardless of who is holding it, creating a security vulnerability known as the “post-authentication gap.”
+
+Continuous Authentication (CA) addresses this by actively monitoring user behavioural, such as gait patterns, touch dynamics, and physical activity, to verify identity implicitly in the background (Abuhamad et al., 2020). While Machine Learning (ML) models have achieved high accuracy in distinguishing legitimate users from impostors, the transition from static metrics to real-world deployment faces a critical hurdle: temporal instability (Baig & Eskeland, 2021).
+
+In real-world environments, sensor data is inherently noisy and high-frequency. A legitimate user's behavioural may fluctuate slightly (e.g., pausing while walking or adjusting grip on the device), causing the model's confidence score to oscillate across the decision threshold. This results in the “ping-pong effect,” where the device rapidly locks and unlocks, rendering the system unusable and eroding user trust (Rayani & Changder, 2022).
+
+## Contributions
+
+This research makes the following key contributions:
+
+- Problem Reframing: We identify decision instability as a design and methodological issue rather than a classification accuracy problem.
+
+- Interdisciplinary Solution: We adapt hysteresis mechanisms from telecommunications engineering to behavioural biometrics.
+
+- Novel Metrics: We introduce stability-focused evaluation metrics (Stability Index, Ping-Pong Frequency) alongside traditional accuracy measures.
+
+- Empirical Validation: We demonstrate complete elimination of oscillation episodes while maintaining 99.26% accuracy using the ExtraSensory dataset.
+
+- Reusable Framework: Our hysteresis layer operates as a post-processing wrapper, making it applicable to any existing CA classifier.
+
+# PROBLEM STATEMENT
+
+Current research in Continuous Authentication predominantly optimizes for point-in-time metrics such as Accuracy, False Acceptance Rate (FAR), and False Rejection Rate (FRR). However, these metrics fail to capture the temporal dynamics of the system in real-world deployment scenarios (Rasnayaka et al., 2023).
+
+A system with 99% accuracy can still be practically unusable if the 1% error rate manifests as rapid, flickering decisions. For example, a classifier might oscillate between “Authenticated User” and “Impostor” states every few seconds due to minor sensor noise or natural behavioural variations. This “ping-pong effect” creates several critical problems:
+
+- Usability Degradation: Frequent authentication interruptions disrupt user workflows and create frustration (Ellavarason et al., 2020).
+
+- Trust Erosion: Users lose confidence in systems that behave erratically, leading to system abandonment or workarounds.
+
+- Security Risks: Users may disable authentication features entirely if they perceive them as too disruptive.
+
+- Energy Consumption: Rapid state changes trigger frequent system actions (screen locks, notifications), draining battery life.
+
+The core problem is that standard ML classifiers make instantaneous decisions based on the current observation frame alone, lacking the “decision inertia” required to handle noisy, real-world sensing environments. Unlike traditional biometric systems that operate in controlled conditions (e.g., fingerprint scanners with clean sensors), CA systems must function continuously in uncontrolled environments with variable sensor quality, user contexts, and environmental interference.
+
+**Research Gap:** While the telecommunications industry solved analogous stability problems decades ago through hysteresis-based handover protocols, the behavioural biometrics community has not systematically explored these techniques. This represents a significant opportunity for cross-domain knowledge transfer
+
+# AIM, OBJECTIVES, AND RESEARCH QUESTIONS
+
+## Aim
+
+The aim of this research is to stabilize smartphone-based continuous authentication systems by developing and validating a Hysteresis-Based Decision Framework that mitigates the ping-pong effect without compromising security responsiveness.
+
+## Objectives
+
+The specific objectives are:
+
+- **Quantify Instability**: To measure the frequency and impact of decision oscillations (ping-pong effect) in naive threshold-based authentication models using real-world sensor data.
+
+- **Adapt Telecom Protocols**: To adapt “Hard Handover” hysteresis algorithms (specifically Margin and Time-to-Trigger mechanisms) from cellular network engineering for application in behavioural biometrics.
+
+- **Evaluate Performance**: To compare the proposed hysteresis-based model against a baseline model using a unified set of metrics including Stability Index, Transition Frequency, and standard classification accuracy.
+
+- **Assess Trade-offs**: To empirically evaluate the trade-off between increased stability and the system’s ability to rapidly detect and respond to genuine security threats.
+
+- **Demonstrate Generalizability**: To validate that the hysteresis framework operates as a reusable post-processing layer compatible with multiple classifier architectures.
+
+## Research Questions
+
+RQ1: To what extent does sensor noise in high-frequency data contribute to decision instability in standard continuous authentication models?
+
+RQ2: Can the application of a hysteresis layer (Margin + Time-to-Trigger) significantly reduce state oscillation compared to naive thresholding?
+
+RQ3: What is the trade-off between increased stability and the system’s ability to detect intruders (security responsiveness), and is this trade-off acceptable for practical deployment?
+
+# JUSTIFICATION
+
+This research is significant because it shifts the focus from classification accuracy (which has reached a plateau in recent years) to deployment viability. By proving that instability is a design failure rather than a model failure, this work offers a reusable “wrapper” solution that can be applied to any existing authentication classifier. The impact extends beyond mobile security to other noise-sensitive domains, such as VPN access control and anomaly detection in IoT networks.
+
+This research is significant for several reasons:
+
+## Paradigm Shift from Accuracy to Deployability
+
+Recent continuous authentication research has achieved accuracy rates exceeding 95-99% (Wang et al., 2020; Zhao et al., 2024), yet real-world adoption remains limited. This work shifts the focus from classification accuracy, which has reached a plateau, to **deployment viability**. By proving that instability is a design failure rather than a model failure, we offer a path forward for practical CA systems.
+
+## Reusable Solution Architecture
+
+Our hysteresis framework operates as a post-processing wrapper that can be applied to any existing authentication classifier (logistic regression, neural networks, ensemble methods) without requiring retraining or architectural modifications. This makes it immediately applicable to existing systems and reduces implementation barriers.
+
+## Cross-Domain Innovation
+
+By importing mature engineering principles from telecommunications, a field that has successfully managed signal stability in noisy environments for decades, we demonstrate the value of interdisciplinary approaches to security challenges.
+
+## Broader Impact
+
+The principles developed here extend beyond mobile security to other noise-sensitive domains: - Enterprise Security: VPN access control and continuous session validation - IoT Networks: Anomaly detection in smart home and industrial IoT systems - Healthcare: Patient monitoring systems requiring stable alert mechanisms - Autonomous Systems: Decision stability in robotics and autonomous vehicles
+
+## User-Centered Security
+
+By prioritizing usability alongside security, this work aligns with the growing recognition that security systems must be designed for human users (Baig & Eskeland, 2021). Systems that are technically secure but practically unusable will be disabled or circumvented, ultimately reducing overall security posture.
+
+# LITERATURE REVIEW
+
+## Trends in Continuous Authentication (2020–2025)
+
+Continuous Authentication has evolved significantly over the past five years, driven by advances in machine learning and the proliferation of smartphone sensors.
+
+### Multimodal Approaches
+
+Early CA systems relied primarily on touch dynamics (Stylios et al., 2022), but recent work has expanded to multimodal fusion. Wang et al. (2020) demonstrated the efficacy of deep metric learning frameworks for on-device authentication, achieving strong performance while preserving privacy. Similarly, Zhao et al. (2024) introduced gated two-tower transformer fusion networks that model channel and temporal sensor correlations to reduce FAR/FRR and improve robustness of continuous decisions.
+
+Zhang et al. (2022) combined physiological (bio-capacitance) and behavioural features in their BioTouch system, reducing false rejects and speeding anomaly detection. This multimodal approach demonstrates that combining complementary signal types can improve both accuracy and stability.
+
+### Zero-Trust Architectures
+
+Liang et al. (2020) surveyed AI-based continuous authentication in the IoT era, discussing FAR/FRR trade-offs and usability constraints. Their comprehensive review highlighted the shift towards “Zero-Trust” architectures where continuous verification is mandatory rather than optional. However, these studies overwhelmingly prioritize ROC-AUC and F1-scores, often neglecting the temporal consistency of predictions over time.
+
+### Deep Learning and Few-Shot Methods
+
+The field has witnessed a proliferation of deep learning architectures. Li et al. (2024) employed spiking neural networks (SNNAuth) with temporal spike-based models to enhance temporal feature extraction and reduce long-term EER. Few-shot learning approaches have also emerged: the AuthentiSense system (2023) used Siamese networks for short interaction authentication with reported FAR/FRR of 0.023/0.057, addressing usability versus stability trade-offs.
+
+## The Stability-Usability Gap
+
+Despite high accuracy rates, usability remains a critical challenge in CA deployment.
+
+5.2.1 False Rejection Impact
+
+Ellavarason et al. (2020) conducted a focused review linking touch-dynamics performance metrics to user inconvenience from false rejects, recommending usability-focused evaluations. Baig and Eskeland (2021) synthesized security/privacy/usability tensions in continuous authentication and highlighted poor matching rates (FAR/FRR) as usability barriers.
+
+### Temporal Drift and Long-Term Performance
+
+A critical finding from recent research is that CA systems exhibit performance degradation over time. A 2023 study on keystroke authentication demonstrated rising FRR over two months, showing that periodic on-device retraining can keep FRR at approximately 2.5% while maintaining attack detection (On the Long-Term Effects, 2023). This temporal drift represents a fundamental challenge for deployment viability.
+
+Shen et al. presented IncreAuth, an incremental learning approach on smartphones to adapt to behavioural drift and reduce FRR over time. Similarly, Both et al. (2023) explored federated learning for behavioural biometrics to preserve privacy while enabling on-device adaptation to behavioural change and decision stability.
+
+### The Ping-Pong Phenomenon
+
+The “ping-pong phenomenon”, rapid oscillation between states, is well-documented in control theory and signal processing but remains under-discussed in the biometric security literature. Rasnayaka et al. (2023) showed that traditional metrics (EER) may miss temporal performance issues and recommended continuous evaluation metrics to capture usability-impacting false rejects over time.
+
+Most CA systems use a simple “Naive Threshold” approach: if the classifier’s probability output exceeds 0.5, the user is authenticated; otherwise, they are locked out. This effectively couples the system’s state directly to the noisy sensor signal, creating instability.
+
+## Emerging Solutions for Stability
+
+### Possession-Aware Authentication
+
+Cariello et al. (2023) introduced SMARTCOPE, which reduced re-authentication points and lowered EER by approximately 40% using movement-based possession detection. This approach improves usability and decision stability by avoiding unnecessary authentication challenges when the device remains in continuous possession.
+
+### One-Class and Adversarial Methods
+
+Hu et al. (2022) proposed a relative attention-based one-class adversarial autoencoder trained only on legitimate behavioural to improve robustness and stability of decisions, reporting very low EERs under high-frequency authentication. This approach addresses the challenge of limited impostor data during training.
+
+### Multi-Device Strategies
+
+Wang et al. (2023) proposed a multi-device adaptive confidence strategy to maintain stable authentication across device transitions, improving usability in scenarios where users switch between multiple devices.
+
+## Hysteresis in Engineering and Control Systems
+
+Hysteresis is a foundational concept in control systems, electronics, and telecommunications, designed specifically to prevent rapid state oscillations in noisy environments.
+
+### Telecommunications Handover
+
+In cellular networks, User Equipment (UE) does not switch towers the moment a new signal is slightly stronger than the current one. Instead, the 3GPP standards (2022) specify a “Hard Handover” mechanism with two key components:
+
+- Margin Threshold: The new signal must exceed the current signal by a specific margin (typically 3-6 dB).
+
+- Time-to-Trigger (TTT): The margin condition must persist for a specified duration (typically 40-640 ms) before handover occurs.
+
+This prevents “ping-ponging” between cell towers at coverage boundaries, ensuring stable connections even with fluctuating signal strength.
+
+### Control Theory Applications
+
+Hysteresis is widely used in thermostats (preventing rapid heating/cooling cycles), voltage regulators (stabilizing output despite input fluctuations), and mechanical systems (reducing wear from frequent state changes). The common principle is introducing a “dead zone” or “inertia” that filters out noise while maintaining responsiveness to genuine signal changes.
+
+### Gap in Biometric Literature
+
+Despite the maturity of hysteresis mechanisms in other domains, their application to behavioural biometrics remains largely unexplored. This study hypothesizes that this mature engineering principle is the missing link required to stabilize probabilistic AI decisions in CA systems.
+
+## Summary and Research Gap
+
+**Table 1: Summary of Related Work and Research Gaps**
+
+| Study | Year | Key Finding | Gap Addressed by This Work |
+| --- | --- | --- | --- |
+| Liang et al. | 2020 | Surveyed AI-based CA with FAR/FRR analysis | Temporal stability not systematically evaluated |
+| Abuhamad et al. | 2020 | Comprehensive survey of behavioural biometrics | Long-term performance degradation acknowledged but not solved |
+| Ellavarason et al. | 2020 | Touch-dynamics linked to user inconvenience | Identified problem but no stability solution |
+| Wang et al. | 2020 | Deep metric learning framework for on-device CA | Privacy-focused but stability not primary concern |
+| Baig & Eskeland | 2021 | Security/privacy/usability tensions synthesized | Highlighted matching rate issues as barriers |
+| Rayani & Changder | 2022 | Surveyed smartphone CA datasets and methods | Evaluation metrics discussion but no stability solution |
+| Zhang et al. | 2022 | BioTouch multimodal system | Improved detection speed but not decision stability |
+| Hu et al. | 2022 | One-class adversarial autoencoder | Stability improved but no hysteresis mechanism |
+| Stylios et al. | 2022 | Keystroke and touch gesture BBCA | Feature selection for stability but no temporal mechanism |
+| Cariello et al. | 2023 | SMARTCOPE possession detection | Reduced re-auth frequency but not ping-pong elimination |
+| Long-Term Effects | 2023 | Demonstrated temporal FRR drift | Retraining solution but not real-time stability |
+| Rasnayaka et al. | 2023 | Re-evaluated keystroke dynamics metrics | Called for continuous metrics but no implementation |
+| Both et al. | 2023 | Federated learning for behavioural biometrics | Privacy-preserving adaptation but not decision stability |
+| Wang et al. | 2023 | Multi-device adaptive confidence | Cross-device stability but not within-device ping-pong |
+| Zhao et al. | 2024 | Gated two-tower transformer fusion | Improved robustness but no explicit stability mechanism |
+| Li et al. | 2024 | Spiking neural networks for CA | Temporal modeling but not hysteresis-based |
+
+# METHODOLOGY
+
+## Dataset
+
+The study utilizes the ExtraSensory Dataset (Vaizman et al., 2017), a comprehensive multimodal collection comprising over 5,000 hours of sensor data from 60 users.
+
+### Dataset Characteristics
+
+Table 2 summarizes the core technical dimensions of the dataset:
+
+| Metric | Specification |
+| --- | --- |
+| Compressed Feature Dataset Size | 215 MB |
+| Raw Sensor Logs Size | >100 GB |
+| Number of Participants | 60 users (Age range: 18–42 years; Mean: 24.7 years) |
+| Data Structure | Timestamped multi-modal time series |
+| Feature Dimensionality | 225 pre-extracted features per instance |
+| Sample shape | Columns: 278, Rows: 2,287 |
+| Context Labels | 51 distinct labels (e.g., At Work, At Home, Commuting, In Class) |
+| Temporal Granularity | 20-second sampling intervals |
+| Sensor Types | Accelerometer, Gyroscope, Magnetometer, GPS, Wi-Fi, Audio, Light |
+| Raw Sampling Frequencies | 40–100 Hz (motion sensors); up to 22 kHz (audio) |
+| License | CC BY-NC-SA 4.0 (publicly available) |
+| Data Collection Period | Multiple weeks per participant |
+| Sensor Modalities | 9 modalities |
+| Storage Size | 747.61 MB |
+| Temporal Resolution | 20-second windows |
+| Missing Data Rate | 16.5% |
+
+### Preprocessing Pipeline
+
+- **Feature Selection**: From the original 225 features, we selected 52 features that account for 95% of total information gain, reducing dimensionality while preserving predictive power.
+
+- **Missing Data Handling**: Missing sensor readings were handled via median imputation within each user’s data to maintain temporal continuity. Windows with >50% missing data were excluded (affecting <2% of frames).
+
+- **User-Specific Splits**: For each user, data was split chronologically:
+
+- Training: First 60% of sessions
+
+- Validation: Next 20% of sessions
+
+- Test: Final 20% of sessions
+
+This temporal split simulates realistic deployment where the model must generalize to future behavioural.
+
+## Model Architecture
+
+Two supervised learning models were trained to predict user identity:
+
+- Logistic Regression: Serving as a linear baseline.
+
+- Implementation: Scikit-learn LogisticRegression with L2 regularization (C=1.0)
+
+- Training Time: 152.60 seconds
+
+- Results: 74.54% accuracy, demonstrating insufficient performance for production deployment
+
+- Gradient Boosting Classifier: Selected for its ability to handle non-linear decision boundaries in high-dimensional feature spaces.
+
+- Implementation: Scikit-learn GradientBoostingClassifier
+
+- Training Time: 741.87 seconds
+
+- The Gradient Boosting model achieved 99.26% accuracy with FAR of 0.53% and FRR of 7.09%, making it suitable as the authentication engine for the hysteresis layer
+
+## The Hysteresis Layer
+
+Instead of using the raw probability output  from the model, a stateful Hysteresis Logic layer was introduced:
+
+- Unlock Condition: (Threshold + Margin)  and  (Time-to-Trigger).
+
+- Stability (Proposed):
+
+- Ping-Pong Frequency: Number of state toggles within a 1-minute window.
+
+- Stability Index: Ratio of stable frames to total frames..
+
+## Evaluation Metrics
+
+Two supervised learning models were trained to predict user identity:
+
+- Standard: Accuracy, False Acceptance Rate (FAR), False Rejection Rate (FRR).
+
+- Gradient Boosting Classifier: Selected for its ability to handle non-linear decision boundaries in high-dimensional feature spaces.
+
+#  RESULTS
+
+## Model Selection: Logistic Regression vs. Gradient Boosting
+
+We first compared two candidate classifiers to select the most suitable authentication engine:
+
+**Table 3: Model Comparison**
+
+| Metric | Logistic Regression | Gradient Boosting |
+| --- | --- | --- |
+| Accuracy | 74.54% | 99.26% |
+| Precision | 0.0998 | 0.8524 |
+| Recall | 0.8741 | 0.9291 |
+| F1-Score | 0.1792 | 0.8891 |
+| FAR | 25.88% | 0.53% |
+| FRR | 12.59% | 7.09% |
+| ROC-AUC | 0.8875 | 0.9976 |
+| EER | 19.24% | 3.81% |
+| Training Time | 152.60s | 741.87s |
+
+The Gradient Boosting Classifier demonstrated superior performance across all metrics, achieving 99.26% accuracy with significantly lower error rates. This model was selected as the base classifier for the hysteresis layer.
+
+## Baseline Performance (Naive Threshold)
+
+Applying a naive threshold (P > 0.5) to the Gradient Boosting Classifier’s probability outputs yielded:
+
+**Table 4: Baseline Stability Performance**
+
+| Metric | Value |
+| --- | --- |
+| Classification Accuracy | 99.26% |
+| Total State Transitions | 597 |
+| Oscillation Episodes (≥3 transitions/min) | 567 |
+| Stability Index | 0.9502 |
+
+Despite achieving 99.26% classification accuracy, the baseline model exhibited **567 oscillation episodes** across all test users, instances where the system toggled between states ≥3 times within 60 seconds. The Stability Index of 0.9502 indicates that only 95.02% of decision frames were in stable states, with 4.98% experiencing instability.
+
+## Hysteresis-Augmented Performance
+
+Applying the hysteresis layer to the same classifier outputs produced dramatic stability improvements:
+
+**Table 5: Hysteresis Model Performance**
+
+| Metric | Baseline | Hysteresis | Change |
+| --- | --- | --- | --- |
+| Classification Metrics |  |  |  |
+| Accuracy | 99.26% | 99.26% | 0.0% |
+| FAR | 0.53% | 0.53% | 0.0% |
+| FRR | 7.09% | 7.09% | 0.0% |
+| Stability Metrics |  |  |  |
+| Total State Transitions | 597 | 49 | -91.8% |
+| Oscillation Episodes | 567 | 0 | -100% |
+| Stability Index | 0.9502 | 0.9959 | +4.8% |
+
+### Key Findings
+
+- **Complete Oscillation Elimination**: The hysteresis layer reduced oscillation episodes from 567 to **0**, completely eliminating the ping-pong effect.
+
+- **No Accuracy Impact**: Classification accuracy remained at 99.26%, demonstrating that stability improvements did not compromise security.
+
+- **Dramatic Stability Improvement**: The Stability Index improved from 0.9502 to **0.9959**, indicating that 99.59% of decision frames were now in stable states, a 4.8% absolute improvement.
+
+- **Transition Reduction**: State transitions decreased from 597 to 49, a **91.8% reduction**. This represents a shift from approximately 5 transitions per user to less than 1 transition per user on average.
+
+## Addressing Research Questions
+
+### RQ1: Sensor Noise Contribution to Instability
+
+The baseline model’s 597 state transitions despite 99.26% accuracy demonstrates that sensor noise significantly contributes to decision instability. The high oscillation frequency (567 episodes) indicates that minor fluctuations in sensor data cause rapid state changes even when the underlying classification model is highly accurate.
+
+### RQ2: Hysteresis Effectiveness
+
+The complete elimination of oscillation episodes (567 → 0) and 91.8% reduction in state transitions conclusively demonstrates that the hysteresis layer (Margin + TTT) significantly reduces state oscillation compared to naive thresholding.
+
+### RQ3: Stability-Security Trade-off
+
+The hysteresis mechanism introduces a controlled delay in state transitions (TTT = 3 seconds). However, this trade-off is acceptable because:
+
+- Accuracy Maintained: No degradation in classification accuracy (99.26%)
+
+- Realistic Threat Model: Genuine impostor access typically lasts minutes to hours, not seconds. A 3-second detection delay is negligible in this context.
+
+- User Experience Priority: The dramatic usability improvement (0 oscillation episodes) far outweighs the minimal security responsiveness reduction.
+
+- Configurable Parameters: TTT can be adjusted based on security requirements. High-security environments could use TTT = 1s, while consumer devices could use TTT = 5s.
+
+##  Principal Findings
+
+This study demonstrates that decision instability in continuous authentication is primarily a design and methodological issue rather than a fundamental limitation of machine learning classifiers. The key findings are:
+
+- **Hysteresis Eliminates Oscillations**: The application of telecommunications-inspired hysteresis mechanisms completely eliminated the ping-pong effect (567 → 0 oscillation episodes) while maintaining 99.26% classification accuracy.
+
+- **Minimal Security Trade-off**: The controlled delay introduced by Time-to-Trigger (3 seconds) is acceptable given realistic threat models where attackers use devices for extended periods.
+
+- **Generalizability**: The hysteresis layer operates as a post-processing wrapper, making it applicable to any probabilistic classifier without requiring retraining or architectural modifications.
+
+- **User-****Centered**** Security**: By prioritizing temporal stability alongside accuracy, this approach aligns security system design with human usability requirements
+
+# CONCLUSION
+
+The experiments confirmed that decision instability in continuous authentication is a byproduct of naive decision logic rather than model inaccuracy. While the baseline Gradient Boosting model achieved high accuracy (~99%), it suffered from significant jitter, recording 567 oscillation episodes.
+
+The integration of the Hysteresis-based decision layer completely eliminated these oscillations (0 episodes) while improving the Stability Index to 0.996. This demonstrates that incorporating “decision inertia” via telecom-inspired protocols effectively bridges the gap between accurate machine learning models and usable, real-world security systems. Future work will extend this framework to adaptive hysteresis, where margins adjust dynamically based on the user's current activity context.
+
+**REFERENCES**
+
+Abuhamad, M., Abusnaina, A., Nyang, D., & Mohaisen, D. (2020). Sensor-based continuous authentication of smartphones’ users using behavioural biometrics: A contemporary survey. *IEEE Internet of Things Journal, 8*(1), 65-84. https://doi.org/10.1109/JIOT.2020.3020076
+
+Baig, A. F., & Eskeland, S. (2021). Security, privacy, and usability in continuous authentication: A survey. *Sensors, 21*(17), 5967. https://doi.org/10.3390/S21175967
+
+Both, C. B., de Medeiros, I. L., Rosário, D., & Cerqueira, E. (2023). A federated learning approach for authentication and user identification based on behavioural biometrics. In *Proceedings of the Brazilian Symposium on Computer Networks and Distributed Systems* (SBRC 2023), pp. 536-549. https://doi.org/10.5753/sbrc.2023.536
+
+Cariello, N., Levine, S., Zhou, G., Hoplight, B., & Gasti, P. (2023). SMARTCOPE: Smartphone change of possession evaluation for continuous authentication. *Pervasive and Mobile Computing, 96*, 101873. https://doi.org/10.1016/j.pmcj.2023.101873
+
+Ellavarason, E., Guest, R., & Deravi, F. (2020). Touch-dynamics based behavioural biometrics on mobile devices–A review from a usability and performance perspective. *ACM Computing Surveys, 53*(6), 1-36. https://doi.org/10.1145/3394713
+
+Hu, M., Zhang, K., You, R., & Tu, B. (2022). Relative attention-based one-class adversarial autoencoder for continuous authentication. *arXiv** preprint arXiv:2210.16819*. https://doi.org/10.48550/arXiv.2210.16819
+
+Li, Y., Sun, X., Yang, Z., & Huang, H. (2024). SNNAuth: Sensor-based continuous authentication using spiking neural networks. *IEEE Internet of Things Journal, 11*(8), 13456-13468. https://doi.org/10.1109/jiot.2024.3349533
+
+Liang, Y., Samtani, S., Guo, B., & Yu, Z. (2020). Behavioural biometrics for continuous authentication in the Internet-of-Things era: An artificial intelligence perspective. *IEEE Internet of Things Journal, 8*(3), 1128-1143. https://doi.org/10.1109/JIOT.2020.3004077
+
+On the Long-Term Effects of Continuous Keystroke Authentication. (2023). *Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies, 7*(2), 1-25. https://doi.org/10.1145/3596236
+
+Rasnayaka, S., Wickramanayake, S., & Meedeniya, D. (2023). Re-evaluating keystroke dynamics for continuous authentication. In *2023 IEEE International Conference on Advanced Research in Computing* (ICARC), pp. 145-150. https://doi.org/10.1109/ICARC57651.2023.10145743
+
+Rayani, P. K., & Changder, S. (2022). Continuous user authentication on smartphone via behavioural biometrics: A survey. *Multimedia Tools and Applications, 81*(21), 30033-30077. https://doi.org/10.1007/s11042-022-13245-9
+
+Shen, Z., Li, S., Zhao, X., & Zou, J. (2023). IncreAuth: Incremental-learning-based behavioural biometric authentication on smartphones. *IEEE Internet of Things Journal, 10*(18), 15987-16001. https://doi.org/10.1109/JIOT.2023.3278654
+
+Stylios, I. C., Skalkos, A., Kokolakis, S., & Karyda, M. (2022). BioPrivacy: Behavioural biometrics continuous authentication based on keystroke dynamics and touch gestures. *Information **&** Computer Security, 30*(4), 569-591. https://doi.org/10.1108/ics-12-2021-0212
+
+Vaizman, Y., Ellis, K., & Lanckriet, G. (2017). Recognizing detailed human context in the wild from smartphones and smartwatches. *IEEE Pervasive Computing, 16*(4), 62-74. https://doi.org/10.1109/MPRV.2017.3971131
+
+Wang, C., Xiao, Y., Gao, X., Li, L., & Wang, J. (2020). A framework for behavioural biometric authentication using deep metric learning on mobile devices. *arXiv** preprint arXiv:2005.11860*. https://doi.org/10.48550/arXiv.2005.11860
+
+Wang, Y., Zhang, X., & Hu, H. (2023). Continuous user authentication on multiple smart devices. *Information, 14*(5), 274. https://doi.org/10.3390/info14050274
+
+Zhang, C., Li, S., Song, Y., Meng, Q., & Lu, L. (2022). BioTouch: Reliable re-authentication via finger bio-capacitance and touching behavioural. *Sensors, 22*(9), 3583. https://doi.org/10.3390/s22093583
+
+Zhao, C., Gao, F., & Shen, Z. (2024). Multi-motion sensor behavioural based continuous authentication on smartphones using gated two-tower transformer fusion networks. *Computers **&** Security, 136*, 103698. https://doi.org/10.1016/j.cose.2023.103698
+
+3GPP Technical Specification Group Radio Access Network. (2022). *Evolved Universal Terrestrial Radio Access (E-UTRA); Radio Resource Control (RRC); Protocol specification* (3GPP TS 36.331 version 16.5.0 Release 16). European Telecommunications Standards Institute.
+
+Tools and Platforms
+Google LLC. (2024). *Google **Colaboratory*. [https://colab.research.google.com](https://colab.research.google.com)
+
+SciSpace. (2024). *SciSpace** literature discovery and research assistant*. https://www.scispace.com
+
+Google. (2024). *Gemini AI*. [https://ai.google](https://ai.google)
+
+Anthropic. (2024). *Claude AI*. [https://www.anthropic.com](https://www.anthropic.com)
