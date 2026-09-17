@@ -14,6 +14,7 @@ def main():
     ap.add_argument('--config', required=True); ap.add_argument('--data', required=True)
     ap.add_argument('--out', required=True); ap.add_argument('--dry-run', action='store_true')
     ap.add_argument('--max-users', type=int, default=None)
+    ap.add_argument('--resume', action='store_true', help='skip (user, feature set, model) combinations already present in per_run_results.csv')
     a = ap.parse_args()
     cfg = json.load(open(a.config)); seed = cfg['seed']
     for d in ['', 'manifests', 'per_impostor', 'score_streams', 'logs']:
@@ -63,8 +64,16 @@ def main():
     if a.dry_run:
         say('DRY RUN: audit complete, no models trained.'); return
 
-    rows, failures = [], []
+    rows, failures, done = [], [], set()
+    prev_path = os.path.join(a.out, 'per_run_results.csv')
+    if a.resume and os.path.exists(prev_path):
+        prev = pd.read_csv(prev_path)
+        rows = prev.to_dict('records')
+        done = {(r['enrolled_user'], r['feature_set'], r['model']) for r in rows}
+        say(f'RESUME: {len(done)} runs already present, {len(runs) - len(done)} remaining')
     for i, (u, f, m) in enumerate(runs, 1):
+        if (u, f, m) in done:
+            continue
         try:
             r = experiment.run_user(ds, cfg, pools, u, f, m, a.out, seed)
             op = r['operating_points']['cal_EER_threshold']

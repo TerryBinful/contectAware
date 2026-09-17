@@ -54,7 +54,7 @@
     "pandas": "2.2.2",
     "sklearn": "1.6.1",
     "scipy": "1.18.1",
-    "git_commit": "c98c15702e0dd6de3bcb312a040546e7262e630e"
+    "git_commit": "87bfed05700f1d8460ccceb74e534f6360458aef"
   },
   "seed": 20260916,
   "planned_runs": 372,
@@ -116,5 +116,5 @@
       "note": "diagnostic: binary NaN indicators only; tests the Stage 1 data-availability shortcut"
     }
   },
-  "started": "2026-09-17T22:06:07"
+  "started": "2026-09-17T23:32:49"
 }
