@@ -1,0 +1,40 @@
+=== POST-PIVOT MECHANISM COMPARISON === postpivot_mechanism_comparison_v1_20260924T191048
+31 eligible users (regular cohort); running 31; pools fit/calib/test = 24/12/24
+[1/31] 098A72A5: 6 test seq, 6 calib seq, 9 mechanisms (80s)
+[2/31] 0A986513: 6 test seq, 6 calib seq, 9 mechanisms (70s)
+[3/31] 136562B6: 6 test seq, 6 calib seq, 9 mechanisms (71s)
+[4/31] 1538C99F: 5 test seq, 6 calib seq, 9 mechanisms (73s)
+[5/31] 24E40C4C: 6 test seq, 6 calib seq, 9 mechanisms (86s)
+[6/31] 2C32C23E: 6 test seq, 6 calib seq, 9 mechanisms (73s)
+[7/31] 3600D531: 5 test seq, 6 calib seq, 9 mechanisms (70s)
+[8/31] 4FC32141: 4 test seq, 6 calib seq, 9 mechanisms (71s)
+[9/31] 5119D0F8: 6 test seq, 6 calib seq, 9 mechanisms (73s)
+[10/31] 5152A2DF: 6 test seq, 6 calib seq, 9 mechanisms (72s)
+=== POST-PIVOT MECHANISM COMPARISON === postpivot_mechanism_comparison_v1_20260924T200604
+31 eligible users (regular cohort); running 31; pools fit/calib/test = 24/12/24
+RESUME: 10 users already done
+[11/31] 5EF64122: 6 test seq, 6 calib seq, 9 mechanisms (75s)
+[12/31] 61976C24: 6 test seq, 6 calib seq, 9 mechanisms (72s)
+[13/31] 78A91A4E: 6 test seq, 6 calib seq, 9 mechanisms (75s)
+[14/31] 7CE37510: 6 test seq, 6 calib seq, 9 mechanisms (73s)
+[15/31] 7D9BB102: 6 test seq, 6 calib seq, 9 mechanisms (68s)
+[16/31] 8023FE1A: 4 test seq, 6 calib seq, 9 mechanisms (74s)
+[17/31] 83CF687B: 5 test seq, 6 calib seq, 9 mechanisms (74s)
+[18/31] 9759096F: 6 test seq, 6 calib seq, 9 mechanisms (74s)
+[19/31] 9DC38D04: 6 test seq, 6 calib seq, 9 mechanisms (75s)
+[20/31] A5CDF89D: 6 test seq, 6 calib seq, 9 mechanisms (72s)
+[21/31] A76A5AF5: 6 test seq, 6 calib seq, 9 mechanisms (73s)
+[22/31] B09E373F: 6 test seq, 6 calib seq, 9 mechanisms (74s)
+[23/31] B9724848: 6 test seq, 6 calib seq, 9 mechanisms (73s)
+[24/31] BE3CA5A6: 6 test seq, 6 calib seq, 9 mechanisms (74s)
+[25/31] CA820D43: 6 test seq, 6 calib seq, 9 mechanisms (73s)
+[26/31] CDA3BBF7: 6 test seq, 6 calib seq, 9 mechanisms (69s)
+[27/31] CF722AA9: 6 test seq, 6 calib seq, 9 mechanisms (69s)
+[28/31] D7D20E2E: 6 test seq, 6 calib seq, 9 mechanisms (70s)
+[29/31] E65577C1: 6 test seq, 6 calib seq, 9 mechanisms (68s)
+[30/31] ECECC2AB: 6 test seq, 6 calib seq, 9 mechanisms (66s)
+=== POST-PIVOT MECHANISM COMPARISON === postpivot_mechanism_comparison_v1_20260924T203456
+31 eligible users (regular cohort); running 31; pools fit/calib/test = 24/12/24
+RESUME: 30 users already done
+[31/31] FDAA70A1: 6 test seq, 6 calib seq, 9 mechanisms (77s)
+EXECUTION SUMMARY: users done=31, sequence-rows=1611, failures=0

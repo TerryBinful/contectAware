@@ -1,0 +1,10 @@
+mechanism,calib_FAR,calib_FRR,constraint_satisfied
+debounce,0.05,0.5889,1.0
+ewma,0.0472,0.1556,1.0
+hysteresis,0.0472,0.5,1.0
+instantaneous,0.0,0.0042,1.0
+majority_vote,0.0472,0.0528,1.0
+margin_dual_threshold,0.0222,0.0,1.0
+moving_average,0.0472,0.3472,1.0
+sprt,0.0056,0.0083,1.0
+trust_model,0.05,0.3931,1.0

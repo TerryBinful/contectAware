@@ -1,0 +1,49 @@
+{
+  "generated": "2026-09-24T19:16:50",
+  "data_dir": "/home/claude/data/csv",
+  "schema_problems": [],
+  "n_participants": 60,
+  "n_feature_columns": 225,
+  "n_label_columns": 51,
+  "total_observations": 377346,
+  "gap_median_s": 60.0,
+  "gap_mean_s": 128.8643469410474,
+  "frac_gaps_59_61": 0.7101323664275907,
+  "frac_gaps_gt_90": 0.05458458569891276,
+  "gap_histogram": {
+    "0-30s": 8434,
+    "30-59s": 35437,
+    "59-61s": 248936,
+    "61-90s": 62902,
+    "90-300s": 18706,
+    "300-3600s": 2414,
+    "3600-86400s": 429,
+    "86400-1000000000000s": 28
+  },
+  "cadence_hypothesis_60s_holds": true,
+  "eligibility": {
+    "rule": "frac(59-61s) >= 0.95 and frames >= 1500",
+    "n_eligible": 31,
+    "n_fragmented": 29
+  },
+  "sequence_structure": {
+    "total_segments": 20654,
+    "max_segment_frames": 6935,
+    "min_segment_frames_max_per_user": 57,
+    "median_segment_frames_median": 9.5,
+    "users_with_segment_ge_180": 37
+  },
+  "feature_inventory": {
+    "phone_motion": 83,
+    "watch": 55,
+    "location": 17,
+    "audio": 28,
+    "device_state": 34,
+    "lf_ambient": 8
+  },
+  "observations_per_user": {
+    "min": 1600,
+    "median": 6312.5,
+    "max": 11996
+  }
+}
