@@ -109,3 +109,67 @@ def run_user(ds, cfg, pools, enrolled, fs_name, model_name, outdir, seed):
                 genuine_test_span_hours=float((ts_u[te][-1] - ts_u[te][0]) / 3600),
                 fit_seconds=float(t_fit), total_seconds=float(time.time() - t0),
                 leakage_checks=checks, **{k: v for k, v in res.items() if k != 'roc'}, roc=res['roc'])
+
+
+# ---------------------------------------------------------------------------
+# Post-pivot addition: expose the Stage 2 per-user pipeline as a FIXED score generator.
+# Same fitting logic as run_user (chronological enrolment rows + fit-pool impostor rows,
+# preprocessing fitted on training rows only, no SMOTE); the only difference is that the
+# fitted object is returned so that arbitrary frames can be scored by the decision-layer
+# experiment. One generator per enrolled user; it is never refitted per mechanism.
+# ---------------------------------------------------------------------------
+class ScoreGenerator:
+    """Fixed authentication-score generator for one enrolled user.
+
+    raw score = classifier log-odds (`decision_function`). Probabilities are unusable as a
+    decision variable here: out-of-sample they compress to ~1e-5 (measured), so probability-scale
+    thresholds and scale-dependent mechanisms (trust, EWMA) degenerate. The log-odds are a strictly
+    monotone transform, so ranking, ROC and AUC are unchanged.
+
+    Optionally an ECDF normaliser (`fit_normaliser`) maps raw scores to [0, 1] using the empirical
+    distribution of CALIBRATION scores only. It is strictly monotone (AUC unchanged) and puts every
+    user on a common scale so that one operating-point rule applies across users and mechanisms.
+    Test data are never used to fit it.
+    """
+    def __init__(self, clf, imp, sc, idx, missingness_only, meta):
+        self._clf, self._imp, self._sc, self._idx, self._mo, self.meta = clf, imp, sc, idx, missingness_only, meta
+        self._ref = None
+    def raw_score(self, X):
+        Z = features.materialise(X, self._idx, self._mo)
+        D = self._sc.transform(self._imp.transform(Z))
+        if hasattr(self._clf, 'decision_function'):
+            return self._clf.decision_function(D)
+        return self._clf.predict_proba(D)[:, 1]
+    def fit_normaliser(self, calibration_raw_scores):
+        self._ref = np.sort(np.asarray(calibration_raw_scores, float))
+        self.meta['normaliser'] = dict(kind='ECDF on calibration scores', n=int(len(self._ref)),
+                                       min=float(self._ref[0]), max=float(self._ref[-1]))
+    def score(self, X):
+        r = self.raw_score(X)
+        if self._ref is None:
+            return r
+        return np.searchsorted(self._ref, r, side='right') / len(self._ref)
+
+def fit_score_generator(ds, cfg, pools, enrolled, fs_name, model_name, seed):
+    t0 = time.time()
+    ts_u, X_u = ds.load(enrolled)
+    tr, ca, te = protocol.temporal_split(ts_u, cfg['split_fracs'])
+    Xi_tr, who_tr, _ = sample_pool(ds, pools['impostor_fit'], enrolled, cfg['impostor_train_cap'], seed + 1, 'fit')
+    idx, cols = features.resolve(ds.feature_cols, fs_name)
+    mo = features.FEATURE_SETS[fs_name]['missingness_only']
+    G = lambda X: features.materialise(X, idx, mo)
+    Xtr = np.vstack([G(X_u[tr]), G(Xi_tr)])
+    ytr = np.r_[np.ones(len(tr)), np.zeros(len(Xi_tr))]
+    imp = SimpleImputer(strategy='median', keep_empty_features=True).fit(Xtr)
+    sc = RobustScaler().fit(imp.transform(Xtr))
+    w = np.where(ytr == 1, (ytr == 0).sum() / max((ytr == 1).sum(), 1), 1.0)
+    clf = build_model(model_name, cfg['models'][model_name], seed)
+    if model_name == 'logistic_regression':
+        clf.fit(sc.transform(imp.transform(Xtr)), ytr)
+    else:
+        clf.fit(sc.transform(imp.transform(Xtr)), ytr, sample_weight=w)
+    meta = dict(enrolled_user=enrolled, feature_set=fs_name, model=model_name, n_features=len(cols),
+                n_enrolment_rows=int(len(tr)), n_fit_impostor_rows=int(len(Xi_tr)),
+                fit_impostor_participants=sorted(set(who_tr)), fit_seconds=float(time.time() - t0),
+                split_sizes=dict(train=int(len(tr)), calib=int(len(ca)), test=int(len(te))))
+    return ScoreGenerator(clf, imp, sc, idx, mo, meta), dict(ts=ts_u, X=X_u, train=tr, calib=ca, test=te)

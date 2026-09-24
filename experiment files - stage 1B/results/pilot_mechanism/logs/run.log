@@ -1,0 +1,5 @@
+=== POST-PIVOT MECHANISM COMPARISON === postpivot_mechanism_comparison_v1_20260924T190759
+31 eligible users (regular cohort); running 2; pools fit/calib/test = 24/12/24
+[1/2] 098A72A5: 6 test seq, 6 calib seq, 9 mechanisms (78s)
+[2/2] 0A986513: 6 test seq, 6 calib seq, 9 mechanisms (70s)
+EXECUTION SUMMARY: users done=2, sequence-rows=108, failures=0
