@@ -50,10 +50,19 @@ def stability(state, window=3):
                 frac_frames_authenticated=float(np.mean(state)))
 
 # ---------- responsiveness ----------
-def detection_latency(state, transition_idx, stable=3):
-    """Frames from the identity transition (first impostor frame) until the state becomes 0 and
-    stays 0 for `stable` consecutive frames. NaN if that never happens."""
-    s = state[transition_idx:]
+def detection_latency(state, transition_idx, stable=3, block_end=None):
+    """Frames from the genuine->impostor transition until the state reaches a STABLE rejected
+    state *inside the impostor block*.
+
+    The detection event and the whole `stable`-frame confirmation window must lie within
+    [transition_idx, block_end); block_end is the first frame of the genuine recovery block.
+    A stable rejection that only occurs during the recovery block is NOT a detection: the system
+    would be rejecting the legitimate user, not the impostor. Returns NaN when stable rejection is
+    never achieved inside the impostor block (the sequence is then a detection FAILURE and is
+    reported as such, never silently converted to 0).
+    """
+    end = len(state) if block_end is None else int(block_end)
+    s = state[transition_idx:end]
     for i in range(len(s) - stable + 1):
         if np.all(s[i:i + stable] == 0):
             return float(i)
@@ -70,7 +79,8 @@ def recovery_latency(state, recovery_idx, stable=3):
 
 def responsiveness(state, truth, transition_idx, recovery_idx, stable=3):
     gen = truth == 1
-    out = dict(detection_latency_frames=detection_latency(state, transition_idx, stable),
+    out = dict(detection_latency_frames=detection_latency(state, transition_idx, stable,
+                                                          block_end=recovery_idx),
                lockout_frames_during_genuine=int(np.sum(state[gen] == 0)),
                lockout_fraction_during_genuine=float(np.mean(state[gen] == 0)) if gen.any() else np.nan)
     out['recovery_latency_frames'] = (recovery_latency(state, recovery_idx, stable)

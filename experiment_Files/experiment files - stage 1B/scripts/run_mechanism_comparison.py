@@ -80,8 +80,16 @@ def main():
             cal_streams = [(benchmark.sequence_scores(s, score_u, score_imp), s['truth']) for s in cal_seqs]
             test_streams = [(benchmark.sequence_scores(s, score_u, score_imp), s['truth']) for s in test_seqs]
             sm = calibrate.estimate_score_models(cal_streams)
+            # Threshold grid (calibration data only). A uniform quantile grid over the pooled
+            # calibration scores is too coarse near the matched operating point, so it is refined
+            # with quantiles of the calibration IMPOSTOR scores in the region where the frame-level
+            # FAR is close to the target. No final-test data are involved.
             pooled_cal = np.concatenate([s for s, _ in cal_streams])
-            thetas = sorted(set(np.quantile(pooled_cal, cfg['theta_quantiles']).tolist()))  # no rounding
+            imp_cal = np.concatenate([s[t == 0] for s, t in cal_streams])
+            q_far = 1.0 - np.linspace(max(cfg['target_far'] - 3 * cfg['far_tolerance'], 1e-4),
+                                      cfg['target_far'] + 3 * cfg['far_tolerance'], cfg['n_far_grid'])
+            thetas = sorted(set(np.quantile(pooled_cal, cfg['theta_quantiles']).tolist()
+                                + np.quantile(imp_cal, np.clip(q_far, 0, 1)).tolist()))
 
             params = {}
             for name in M.MECHANISM_ORDER:

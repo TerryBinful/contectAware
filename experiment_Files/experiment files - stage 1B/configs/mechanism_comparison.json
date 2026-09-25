@@ -89,5 +89,8 @@
   "normaliser_impostors": 6,
   "normaliser_rows": 1500,
   "score_normalisation": "ECDF fitted on calibration scores (monotone; AUC unchanged)",
-  "raw_score": "classifier log-odds (decision_function)"
+  "raw_score": "classifier log-odds (decision_function)",
+  "n_far_grid": 40,
+  "theta_grid_note": "uniform quantiles of pooled calibration scores, refined with calibration impostor-score quantiles spanning FAR in [target-3*tol, target+3*tol]",
+  "operating_point_rule": "feasible iff target-tolerance <= calibration FAR <= target+tolerance; closest to target, then lower FRR, then simpler parameters"
 }

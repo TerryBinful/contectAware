@@ -91,6 +91,28 @@ def test_transition_and_flip_definitions():
     assert MET.n_flip_events(np.array([1, 1, 1, 0, 0, 0, 0, 0, 0, 0]), window=3) == 0
     assert MET.n_transitions(np.ones(10, int)) == 0
 
+def test_detection_latency_bounded_to_impostor_block():
+    # [genuine 0:3 | impostor 3:6 | recovery 6:9]; stable rejection happens only in the RECOVERY block
+    state = np.array([1, 1, 1, 1, 1, 1, 0, 0, 0])
+    assert np.isnan(MET.detection_latency(state, 3, stable=2, block_end=6))   # not a detection
+    assert MET.detection_latency(state, 3, stable=2) == 3                      # unbounded (old, wrong) behaviour
+    # the confirmation window must fit entirely inside the impostor block
+    edge = np.array([1, 1, 1, 1, 1, 0, 0, 0, 0])
+    assert np.isnan(MET.detection_latency(edge, 3, stable=2, block_end=6))
+    ok = np.array([1, 1, 1, 0, 0, 1, 1, 1, 1])
+    assert MET.detection_latency(ok, 3, stable=2, block_end=6) == 0
+
+def test_responsiveness_uses_recovery_idx_as_block_end():
+    truth = np.array([1, 1, 1, 0, 0, 0, 1, 1, 1])
+    state = np.array([1, 1, 1, 1, 1, 1, 0, 0, 0])
+    r = MET.responsiveness(state, truth, transition_idx=3, recovery_idx=6, stable=2)
+    assert np.isnan(r['detection_latency_frames'])          # rejection came too late
+    assert np.isnan(r['recovery_latency_frames'])           # and it never recovers either
+
+def test_recovery_latency_starts_at_recovery_transition():
+    state = np.array([1, 1, 1, 0, 0, 0, 0, 1, 1])
+    assert MET.recovery_latency(state, 6, stable=2) == 1
+
 def test_latency_definitions():
     truth = np.array([1, 1, 1, 0, 0, 0, 0, 0])      # impostor arrives at index 3
     state = np.array([1, 1, 1, 1, 1, 0, 0, 0])

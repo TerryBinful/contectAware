@@ -53,6 +53,21 @@ def check(out):
        not S.duplicated(['enrolled_user', 'sequence_id', 'mechanism']).any())
 
     O = pd.read_csv(os.path.join(out, 'operating_points.csv'))
+    meta = json.load(open(os.path.join(out, 'experiment_metadata.json')))
+    tgt = meta['operating_point']['target_FAR']; tol = meta['operating_point']['tolerance']
+    lo, hi = tgt - tol, tgt + tol
+    if 'feasible_operating_point_exists' in O.columns:
+        feas = O[O.feasible_operating_point_exists]
+        ok('matched_FAR_interval_enforced_when_feasible',
+           bool(((feas.calib_FAR >= lo - 1e-9) & (feas.calib_FAR <= hi + 1e-9)).all()),
+           f'out-of-interval feasible rows={int((~((feas.calib_FAR >= lo - 1e-9) & (feas.calib_FAR <= hi + 1e-9))).sum())}')
+        ok('infeasible_operating_points_explicitly_recorded',
+           O.nearest_candidate_direction.notna().all(),
+           f'infeasible={int((~O.feasible_operating_point_exists).sum())} of {len(O)}')
+    else:
+        ok('operating_points_file_has_feasibility_fields', False, 'rerun required after the calibration fix')
+    ok('seed_and_commit_recorded', bool(meta.get('random_seed') is not None and meta.get('git_commit')),
+       str(meta.get('git_commit'))[:8])
     ok('calibration_recorded_for_every_mechanism_and_user',
        O.groupby('enrolled_user').mechanism.nunique().min() == S.mechanism.nunique())
     ok('parameters_identical_across_test_sequences_of_a_user',
