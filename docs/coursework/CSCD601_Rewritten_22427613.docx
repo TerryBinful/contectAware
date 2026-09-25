@@ -1,0 +1,42 @@
+# Methodological Design Choices in Context-Aware Continuous Authentication Systems
+
+Index Number: [INDEX NUMBER]
+Course: CSCD601 – Research Methods
+
+## Abstract
+
+This paper examines how research design choices influence the quality, validity, and impact of Computer Science research, using context-aware continuous authentication as a case study. Specifically, the study investigates the use of ambient environmental noise and magnetometer sensor data for implicit authentication and evaluates the adoption of a hysteresis-based decision mechanism inspired by cellular hard handover protocols. Rather than focusing solely on predictive accuracy, this work emphasizes methodological robustness, decision stability, and real-world applicability.
+
+## 1. Introduction
+
+Research design choices play a critical role in determining the validity and impact of Computer Science research, particularly in security-sensitive domains such as authentication.
+
+## 2. Research Problem
+
+Continuous authentication systems often suffer from decision instability due to noisy sensor data, leading to frequent state oscillations.
+
+## 3. Research Aim and Objectives
+
+The aim of this research is to evaluate how methodological design choices affect authentication reliability.
+
+## 4. Research Questions and Hypotheses
+
+RQ1: To what extent can ambient environmental noise and magnetometer data support continuous authentication?
+
+RQ2: How does hysteresis influence authentication stability?
+
+H1: Ambient sensor data can support reliable continuous authentication.
+
+H2: Hysteresis-based models reduce decision instability.
+
+## 5. Methodology
+
+An experimental research design is adopted using the ExtraSensory dataset. Baseline and hysteresis-based decision models are compared.
+
+## 6. Ethical Considerations
+
+The study uses anonymized secondary data and addresses privacy implications of passive sensing.
+
+## 7. Conclusion
+
+The study demonstrates that methodological design choices significantly influence research outcomes in authentication systems.
