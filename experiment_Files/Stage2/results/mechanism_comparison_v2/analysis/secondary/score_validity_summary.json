@@ -1,0 +1,13 @@
+{
+  "n_users": 31,
+  "mean_AUC_F3": 0.990120723815213,
+  "mean_AUC_F7": 0.7584704363301473,
+  "diff": {
+    "mean": 0.23165028748506572,
+    "median": 0.22909915123456792,
+    "lo": 0.1906039885441557,
+    "hi": 0.2728733883412983,
+    "n": 31
+  },
+  "note": "Descriptive construct-validity probe (\u00a74.4). No decision layer is run on F7."
+}
