@@ -12,7 +12,7 @@ import os, sys, json
 import numpy as np, pandas as pd
 import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _style import apply_style, save, despine, ANALYSIS, OI, INK, INK2, INK3, HERE
+from _style import write_checks, apply_style, save, despine, ANALYSIS, OI, INK, INK2, INK3
 
 apply_style()
 SEC = os.path.join(ANALYSIS, 'secondary')
@@ -94,7 +94,4 @@ checks = [
      f'min AUC_F7 = {D.AUC_F7.min():.4f}'),
     ('fig4 pairing', 'complete', 'every participant has both an F3 and an F7 AUC'),
 ]
-json.dump([dict(check=c, value=v, note=nt) for c, v, nt in checks],
-          open(os.path.join(HERE, '_fig4_checks.json'), 'w'), indent=2)
-for c, v, nt in checks:
-    print(f'  CHECK {c}: {v}  ({nt})')
+write_checks('fig4_score_validity_f3_f7', checks)

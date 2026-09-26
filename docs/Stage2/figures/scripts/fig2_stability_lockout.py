@@ -21,7 +21,8 @@ import os, sys, json
 import numpy as np, pandas as pd
 import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _style import apply_style, save, despine, ANALYSIS, DISPLAY, OI, INK, INK2, INK3, HERE
+from _style import (write_checks, apply_style, save, despine, ANALYSIS, DISPLAY,
+                    OI, INK, INK2, INK3)
 
 apply_style()
 
@@ -140,7 +141,4 @@ feas = {m: (int(idx03.loc[m, 'n_users_feasible']), int(idx05.loc[m, 'n_users_fea
 checks.append(('fig2 feasible participants per mechanism (0.03/0.05/0.07)',
                f"{min(min(v) for v in feas.values())}-{max(max(v) for v in feas.values())}",
                '; '.join(f'{DISPLAY[m]} {a}/{b}/{c}' for m, (a, b, c) in feas.items())))
-json.dump([dict(check=c, value=v, note=n) for c, v, n in checks],
-          open(os.path.join(HERE, '_fig2_checks.json'), 'w'), indent=2)
-for c, v, n in checks:
-    print(f'  CHECK {c}: {v}')
+write_checks('fig2_stability_lockout', checks)

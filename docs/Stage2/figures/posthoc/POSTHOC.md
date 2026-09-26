@@ -8,9 +8,9 @@
 > and nothing else. No p-value, no Holm correction and no decision rule is attached to
 > anything below. The intervals are descriptive bootstrap intervals over participants.
 
-**Script:** `docs/Stage2/figures/posthoc_cellH_descriptives.py`
-**Outputs:** `posthoc_cellH_descriptives.csv`, `posthoc_cellH_vs_paper.csv`,
-`_posthoc_provenance.json`
+**Script:** `docs/Stage2/figures/scripts/posthoc_cellH_descriptives.py`
+**Outputs (this directory):** `posthoc_cellH_descriptives.csv`,
+`posthoc_cellH_vs_paper.csv`, `provenance.json`
 
 **Method**, matching the frozen pipeline exactly: participants are paired, so a
 participant contributes only when both cells were feasible; the statistic is the mean of

@@ -15,7 +15,7 @@ import os, sys, json
 import numpy as np, pandas as pd
 import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _style import apply_style, save, despine, ANALYSIS, OI, INK, INK2, INK3, HERE
+from _style import write_checks, apply_style, save, despine, ANALYSIS, OI, INK, INK2, INK3
 
 apply_style()
 S = pd.read_csv(os.path.join(ANALYSIS, 'families', 'sequence_metrics.csv'))
@@ -92,7 +92,4 @@ checks.append(('fig3 sequences behind the means', str(n_seq),
                f'{n_seq/n_users:.2f} sequences per participant on average (5-6 each)'))
 checks.append(('fig3 max per-participant mean excess',
                f'{per_user.max():.4f}', f'participant {per_user.index[0]}'))
-json.dump([dict(check=c, value=v, note=n) for c, v, n in checks],
-          open(os.path.join(HERE, '_fig3_checks.json'), 'w'), indent=2)
-for c, v, n in checks:
-    print(f'  CHECK {c}: {v}  ({n})')
+write_checks('fig3_instability_concentration', checks)

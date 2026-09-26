@@ -12,8 +12,8 @@ import numpy as np, pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _style import (apply_style, save, ANALYSIS, CMAP_EXCESS, CMAP_FRR, INFEASIBLE,
-                    INK, INK2, OI, CELL_CLASS_DISPLAY)
+from _style import (write_checks, apply_style, save, ANALYSIS, CMAP_EXCESS, CMAP_FRR,
+                    INFEASIBLE, INK, INK2, OI, CELL_CLASS_DISPLAY)
 
 apply_style()
 R = pd.read_csv(os.path.join(ANALYSIS, 'factorial', 'response_surface.csv'))
@@ -114,7 +114,4 @@ ax.set_xlabel('Dwell $k$ (frames)')
 ax.xaxis.set_label_coords(0.5, -0.235)
 
 save(fig, 'fig1_factorial_surface')
-json.dump([dict(check=c, value=v, note=n) for c, v, n in checks],
-          open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '_fig1_checks.json'), 'w'), indent=2)
-for c, v, n in checks:
-    print(f'  CHECK {c}: {v}')
+write_checks('fig1_factorial_surface', checks)

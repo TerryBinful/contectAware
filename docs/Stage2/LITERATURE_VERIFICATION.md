@@ -3,6 +3,12 @@
 Date: 2026-09-26. Phase: post-freeze literature verification (Part D of `V2_FORENSIC_AUDIT_AND_PLAN.md`).
 No experimental code or frozen result was touched in producing this document.
 
+**Companion document.** [`CITATIONS_VERIFIED.md`](CITATIONS_VERIFIED.md) checks the nine specific
+citations the draft relies on, one by one, against primary sources. Five of the nine need correcting
+before submission. In particular it establishes that Mondal & Bours (2015) does **not** isolate a
+single decision-layer component at a matched operating point — which narrows, but does not rescue,
+the comparative-gap claim assessed below.
+
 **Method.** Adversarial search first: for each candidate novelty claim I searched for prior work that would
 invalidate it, before searching for support. Sources: Consensus (Semantic Scholar / PubMed / Scopus / arXiv,
 ~220M papers), SciSpace (~280M), and targeted web verification for the 3GPP definitions. Evidence level is

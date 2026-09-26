@@ -24,10 +24,9 @@ Sources (read only):
 import os, sys, json
 import numpy as np, pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _style import ANALYSIS, HERE
+from _style import ANALYSIS, POSTHOC, STAGE2_SRC
 
-REPO = os.path.normpath(os.path.join(HERE, '..', '..', '..'))
-sys.path.insert(0, os.path.join(REPO, 'experiment_Files', 'Stage2'))
+sys.path.insert(0, STAGE2_SRC)
 import src.decision_v2 as D                                       # noqa: E402
 
 SEED, N_BOOT, TARGET = 20260918, 2000, 0.05
@@ -75,7 +74,7 @@ for comp in ('D', 'M'):
                          excludes_zero=bool(ci['lo'] > 0 or ci['hi'] < 0)))
 
 R = pd.DataFrame(rows)
-out_csv = os.path.join(HERE, 'posthoc_cellH_descriptives.csv')
+out_csv = os.path.join(POSTHOC, 'posthoc_cellH_descriptives.csv')
 R.to_csv(out_csv, index=False)
 
 # ---- agreement with what the paper reports (cell_H vs cell_D only) ---------------
@@ -91,12 +90,12 @@ for metric, (pm_, plo, phi) in PAPER_HD.items():
                       ci_lo_gap=round(float(abs(r.ci_lo - plo)), 4),
                       ci_hi_gap=round(float(abs(r.ci_hi - phi)), 4)))
 AG = pd.DataFrame(diffs)
-AG.to_csv(os.path.join(HERE, 'posthoc_cellH_vs_paper.csv'), index=False)
+AG.to_csv(os.path.join(POSTHOC, 'posthoc_cellH_vs_paper.csv'), index=False)
 
 json.dump(dict(label='POST HOC, NOT IN THE FROZEN PLAN', seed=SEED, n_boot=N_BOOT,
                target_FAR=TARGET, pairing=prov,
                routine='src.decision_v2.bootstrap_mean_ci (the project bootstrap)'),
-          open(os.path.join(HERE, '_posthoc_provenance.json'), 'w'), indent=2)
+          open(os.path.join(POSTHOC, 'provenance.json'), 'w'), indent=2)
 
 pd.set_option('display.width', 200)
 print('\nPOST HOC, NOT IN THE FROZEN PLAN  (target FAR %.2f, seed %d, %d resamples)\n'

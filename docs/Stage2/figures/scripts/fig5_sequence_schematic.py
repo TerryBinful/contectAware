@@ -20,15 +20,14 @@ import numpy as np, pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _style import apply_style, save, despine, ANALYSIS, OI, INK, INK2, INK3, GRID, HERE
+from _style import (write_checks, apply_style, save, despine, ANALYSIS,
+                    STAGE2_SRC, OI, INK, INK2, INK3, GRID)
 
 apply_style()
 RESULTS = os.path.normpath(os.path.join(ANALYSIS, '..'))
-REPO = os.path.normpath(os.path.join(HERE, '..', '..', '..'))
-SRC = os.path.join(REPO, 'experiment_Files', 'Stage2', 'src')
 
 # import the frozen rule module standalone (its package does a relative import of metrics)
-sys.path.insert(0, os.path.join(REPO, 'experiment_Files', 'Stage2'))
+sys.path.insert(0, STAGE2_SRC)
 import src.decision_v2 as D                                      # noqa: E402
 
 TARGET = 0.05
@@ -198,7 +197,4 @@ checks = [
     ('fig5 candidate participants (all three cells feasible at FAR 0.05)',
      str(len(users)), 'from operating_points.csv'),
 ]
-json.dump([dict(check=c, value=v, note=n) for c, v, n in checks],
-          open(os.path.join(HERE, '_fig5_checks.json'), 'w'), indent=2)
-for c, v, n in checks:
-    print(f'  CHECK {c}: {v}  ({n})')
+write_checks('fig5_sequence_schematic', checks)

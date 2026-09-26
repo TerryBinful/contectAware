@@ -1,17 +1,14 @@
 # Numbers checked
 
 Every value drawn in a figure, checked against the source CSV or JSON it came from.
-Each script writes its own record to `_figN_checks.json` when it runs; this file collects
-them. Nothing under `experiment_Files/Stage2/results/mechanism_comparison_v2/analysis/`
+Each script writes its own record to `checks/<stem>_checks.json` when it runs; this file
+collects them. Nothing under `experiment_Files/Stage2/results/mechanism_comparison_v2/analysis/`
 was written to, and no experiment, model fit or score generation was rerun.
 
 Reproduce everything with:
 
 ```bash
-cd docs/Stage2/figures
-for f in fig1_factorial_surface.py fig2_stability_lockout.py \
-         fig3_instability_concentration.py fig4_score_validity_f3_f7.py \
-         fig5_sequence_schematic.py posthoc_cellH_descriptives.py; do python3 "$f"; done
+cd docs/Stage2/figures && ./build.sh
 ```
 
 ## Discrepancies found
@@ -131,9 +128,9 @@ atypical this participant is.
 
 ## Post-hoc reproduction — POST HOC, NOT IN THE FROZEN PLAN
 
-Script `posthoc_cellH_descriptives.py`; outputs `posthoc_cellH_descriptives.csv` and
-`posthoc_cellH_vs_paper.csv`. Seed 20260918, 2,000 participant-level resamples, the
-project's own `src.decision_v2.bootstrap_mean_ci`. See `POSTHOC.md` for the tables.
+Script `scripts/posthoc_cellH_descriptives.py`; outputs `posthoc/posthoc_cellH_descriptives.csv`
+and `posthoc/posthoc_cellH_vs_paper.csv`. Seed 20260918, 2,000 participant-level resamples, the
+project's own `src.decision_v2.bootstrap_mean_ci`. See `posthoc/POSTHOC.md` for the tables.
 
 All five point estimates for cell_H versus cell_D reproduce the values printed in
 Section 5.1 to three decimal places. Confidence bounds move by at most 0.029 on the

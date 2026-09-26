@@ -65,10 +65,33 @@ def despine(ax, keep=('left', 'bottom')):
     for s in ('top', 'right', 'left', 'bottom'):
         ax.spines[s].set_visible(s in keep)
 
+# ---- where things live -----------------------------------------------------------
+# docs/Stage2/figures/
+#   scripts/   this file and the figure scripts   (HERE)
+#   rendered/  the PNG and PDF pairs              (RENDERED)
+#   checks/    one JSON of checked numbers each   (CHECKS)
+#   posthoc/   the post-hoc tables and their note (POSTHOC)
+# Every path is derived from __file__, so the scripts run from any working directory.
 HERE = os.path.dirname(os.path.abspath(__file__))
-ANALYSIS = os.path.normpath(os.path.join(
-    HERE, '..', '..', '..', 'experiment_Files', 'Stage2', 'results',
-    'mechanism_comparison_v2', 'analysis'))
+FIG_ROOT = os.path.dirname(HERE)
+REPO = os.path.normpath(os.path.join(FIG_ROOT, '..', '..', '..'))
+RENDERED = os.path.join(FIG_ROOT, 'rendered')
+CHECKS = os.path.join(FIG_ROOT, 'checks')
+POSTHOC = os.path.join(FIG_ROOT, 'posthoc')
+ANALYSIS = os.path.join(REPO, 'experiment_Files', 'Stage2', 'results',
+                        'mechanism_comparison_v2', 'analysis')
+STAGE2_SRC = os.path.join(REPO, 'experiment_Files', 'Stage2')
+for _d in (RENDERED, CHECKS, POSTHOC):
+    os.makedirs(_d, exist_ok=True)
+
+
+def write_checks(stem, checks):
+    """Write one figure's checked numbers to checks/<stem>_checks.json and echo them."""
+    import json
+    with open(os.path.join(CHECKS, f'{stem}_checks.json'), 'w') as fh:
+        json.dump([dict(check=c, value=v, note=n) for c, v, n in checks], fh, indent=2)
+    for c, v, n in checks:
+        print(f'  CHECK {c}: {v}' + (f'  ({n})' if n else ''))
 
 def check_overflow(fig, tol=0.004):
     """Return per-side overflow, in inches, of drawn content past the figure canvas.
@@ -119,10 +142,10 @@ def save(fig, stem, strict=True):
                              f'({msg}) and would be truncated. Shorten the labels or '
                              f'widen the figure.')
         print(f'  WARNING {stem}: content off-canvas ({msg})')
-    png = os.path.join(HERE, stem + '.png'); pdf = os.path.join(HERE, stem + '.pdf')
+    png = os.path.join(RENDERED, stem + '.png'); pdf = os.path.join(RENDERED, stem + '.pdf')
     fig.savefig(png); fig.savefig(pdf)
     plt.close(fig)
     w, h = fig.get_size_inches()
-    print(f'  wrote {os.path.basename(png)} and {os.path.basename(pdf)} '
+    print(f'  wrote rendered/{os.path.basename(png)} and rendered/{os.path.basename(pdf)} '
           f'({w*2.54:.1f} x {h*2.54:.1f} cm, no off-canvas content)')
     return png, pdf
