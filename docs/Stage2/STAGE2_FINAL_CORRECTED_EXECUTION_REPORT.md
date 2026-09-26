@@ -32,7 +32,7 @@ Regular-cadence cohort; chronological 60/20/20 per-user split; participant-disjo
 (fit 24 / calibration 12 / test 24) with unseen final-test impostors; training-only preprocessing; one fixed
 per-user gradient-boosting score generator shared by all mechanisms; log-odds scores normalised by an ECDF fitted
 on calibration only; controlled identity-transition sequences [genuine 60 | impostor 60 | recovery 60 frames]
-built from contiguous real observations; ~1 minute per frame. Full detail: `FINAL_PROTOCOL_AUDIT.md`.
+built from contiguous real observations; ~1 minute per frame. Full detail: `docs/Stage2/FINAL_PROTOCOL_AUDIT.md`.
 
 ## Participants
 

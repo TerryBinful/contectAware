@@ -2,7 +2,7 @@
 
 Scope: the corrected final run in `results/mechanism_comparison/`. The pre-correction run is archived,
 clearly labelled exploratory, in `results/stage2_exploratory_pre_calibration_fix/` and must not be mixed
-with these results. Run-specific counts are in `reports/STAGE2_FINAL_CORRECTED_EXECUTION_REPORT.md`.
+with these results. Run-specific counts are in `docs/Stage2/STAGE2_FINAL_CORRECTED_EXECUTION_REPORT.md`.
 
 ## 1. Research question
 

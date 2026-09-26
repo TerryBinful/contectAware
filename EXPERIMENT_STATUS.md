@@ -17,7 +17,7 @@ carried into the post-pivot results.
 
 | Item | Finding |
 |---|---|
-| Structure | `docs/`, `experiment_Files/` (legacy notebooks + Stage 1 reproduction), `experiment files - stage 1B/` (Stage 2 + post-pivot package) |
+| Structure | `docs/`, `experiment_Files/` (legacy notebooks + Stage 1 reproduction), `Stage2/` (Stage 2 + post-pivot package) |
 | Branch / commits | `main`; `ef16807` (legacy) → `c98c157` (Stage 1) → `87bfed0`, `2b53d43` (Stage 2) → `b8d69bb`, `af89900` (post-pivot) |
 | Existing cadence code | Stage 1 `dataset_temporal_audit.py` (descriptive only). No `05_cadence_check.py` exists in the repository. Cadence logic now lives in `src/protocol.py` and is driven by `scripts/run_dataset_audit.py` — one checker, not two |
 | Existing classifier code | Stage 2 `src/experiment.py` per-user pipeline. **Reused**, extended with `ScoreGenerator`/`fit_score_generator`; `run_user` untouched |

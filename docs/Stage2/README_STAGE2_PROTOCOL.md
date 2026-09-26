@@ -39,7 +39,7 @@ valid score stream first; Stage 2 produces exactly that (`score_streams/*.npz`, 
 ## 3. Structure
 
 ```
-experiment files - stage 1B/
+Stage2/
 ├── README.md                     this file
 ├── configs/                      stage2_primary | pilot | secondary_fragmented | fast_hgb | costprobe (JSON)
 ├── src/                          data_io.py  features.py  protocol.py  evaluate.py  experiment.py
