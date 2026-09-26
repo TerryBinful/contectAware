@@ -143,7 +143,11 @@ def save(fig, stem, strict=True):
                              f'widen the figure.')
         print(f'  WARNING {stem}: content off-canvas ({msg})')
     png = os.path.join(RENDERED, stem + '.png'); pdf = os.path.join(RENDERED, stem + '.pdf')
-    fig.savefig(png); fig.savefig(pdf)
+    fig.savefig(png)
+    # CreationDate: None omits the timestamp the PDF backend would otherwise stamp in.
+    # These PDFs are committed, so without this every rebuild shows as a modified file
+    # even when the figure is identical, and the diff is pure noise.
+    fig.savefig(pdf, metadata={'CreationDate': None})
     plt.close(fig)
     w, h = fig.get_size_inches()
     print(f'  wrote rendered/{os.path.basename(png)} and rendered/{os.path.basename(pdf)} '

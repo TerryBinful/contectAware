@@ -8,7 +8,7 @@ was written to, and no experiment, model fit or score generation was rerun.
 Reproduce everything with:
 
 ```bash
-cd docs/Stage2/figures && ./build.sh
+cd docs/Stage2 && ./build.sh
 ```
 
 ## Discrepancies found
@@ -29,7 +29,13 @@ Two things are worth recording as findings rather than discrepancies:
    Figure 5. Out-of-view tick labels are excluded, since matplotlib keeps them "visible"
    and they produce phantom failures.
 
-2. **Figure 1 was redrawn stacked rather than side by side.** Two 4×5 heat maps annotated
+2. **The committed PDFs were not reproducible.** The matplotlib PDF backend stamps a
+   `CreationDate`, so every rebuild showed all five PDFs as modified files even when the
+   figures were identical, and the diff was pure noise. `save()` now passes
+   `metadata={'CreationDate': None}`, and two consecutive rebuilds produce byte-identical
+   PDFs. The PNGs were already stable.
+
+3. **Figure 1 was redrawn stacked rather than side by side.** Two 4×5 heat maps annotated
    with a value and a participant count per cell cannot be read when they share 8.5 cm;
    the annotations fell to about 3 pt. Stacked, each panel gets the full column width.
 

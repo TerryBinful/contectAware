@@ -9,9 +9,12 @@ writes to `experiment_Files/Stage2/results/`, refits a model, or regenerates a s
 dump** — they read CSV and JSON only. Rebuild the lot with:
 
 ```bash
-./build.sh            # everything
-./build.sh fig3       # just the scripts matching "fig3"
+cd ..            # docs/Stage2, where build.sh lives
+./build.sh       # every figure and table
+./build.sh fig3  # only the parts matching "fig3"
 ```
+
+`build.sh` sits one level up because it builds the [tables](../tables/) too.
 
 ## Layout
 
