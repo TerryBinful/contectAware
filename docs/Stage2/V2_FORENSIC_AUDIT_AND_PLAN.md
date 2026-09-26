@@ -25,14 +25,14 @@ source. Claims taken from `V2_RESULTS.md` without independent recomputation are 
 | Primary verdict generated mechanically | `primary/PRIMARY_DECISION.md` written by the script, not by hand |
 | v1 exploratory results archived separately | `results/stage2_exploratory_pre_calibration_fix/` with `ARCHIVED_README.md` |
 
-### Incomplete
+### Incomplete at the time of the audit — all closed on 2026-09-26 except (3)
 
-1. **`moving_average` batch simulator does not reproduce the v1 reference class** (Part B, B1). This is the
-   only implementation defect found. It affects the secondary tuned-family comparison only.
-2. No sensitivity analysis has been run under the v2 rules at FAR 0.03 / 0.07 for the **factorial**; the
-   offline script computes family results at all three targets, but the primary factorial decision is
-   reported at 0.05 only.
-3. Literature verification (Part D) has not been performed at any point in the project.
+1. ~~`moving_average` batch simulator does not reproduce the v1 reference class~~ — **fixed and re-run**
+   (`d39ee79`, B1).
+2. ~~No factorial sensitivity at FAR 0.03 / 0.07~~ — **run as declared secondary sensitivity**
+   (`secondary/factorial_far_0.03/`, `factorial_far_0.07/`; §4.2 rules, identical criterion).
+3. Literature verification (Part D) has not been performed at any point in the project. **This is the one
+   outstanding item and the next phase of work.**
 
 ### Superseded — retained, correctly labelled
 
@@ -69,7 +69,18 @@ source. Claims taken from `V2_RESULTS.md` without independent recomputation are 
 No rule was found to be violated, weakened, or silently reinterpreted. The reachability filter and the
 one-sided band are both genuinely enforced.
 
-### B1 — `moving_average` does not reproduce the v1 reference semantics — **IMPORTANT**
+### B1 — `moving_average` did not reproduce the v1 reference semantics — **RESOLVED 2026-09-26 (`d39ee79`)**
+
+> **Post-fix status.** `_moving_mean` now computes a windowed `np.mean` bit-for-bit. A deterministic
+> regression test (`test_moving_average_matches_numpy_mean_on_exact_ties`) was added and **verified to fail
+> against the previous implementation**. The offline analysis was re-run on the unchanged frozen dumps.
+> **Classified as a secondary-analysis implementation defect.** Measured impact after re-running:
+> the preregistered primary factorial and primary tests are **bit-for-bit identical** (md5 unchanged on
+> `primary/cell_selection.csv`, `primary/primary_tests.csv`, `primary/frr_difference_curve.csv`,
+> `factorial/*.csv`); in the secondary tuned-family table **only the `moving_average` row moved**
+> (FRR 0.057885 → 0.060305, FAR 0.046729 → 0.047088; excess transitions, detection failure and recovery
+> failure unchanged), the other nine families are identical, and **no significance flipped** in
+> `families/statistical_tests.csv`. The original finding is preserved below for the record.
 
 * **File / function:** `experiment_Files/Stage2/src/decision_v2.py:33` `_moving_mean`
 * **Preregistered rule:** §2.1 keeps the v1 mechanism families unchanged; `V2_ANALYSIS_IMPLEMENTATION_NOTES.md`
@@ -314,3 +325,82 @@ responsiveness costs. State it plainly. It is a better thesis than a rescued pos
 2. Whether `stage2_v2_scoredump_f3_results/` is deleted or archived (verified redundant either way).
 3. Whether the thesis leads with the methodological framework or the empirical null as its primary
    contribution — this is a framing decision the literature verification should inform.
+
+---
+
+# STAGE 2 FREEZE — 2026-09-26
+
+Stage 2 is closed. Experimentation stops here. The next phase is literature verification, then writing.
+
+## What was done at close-out (`d39ee79` onward)
+
+| # | Action | Outcome |
+|---|---|---|
+| 1 | Fixed `_moving_mean` to a bit-for-bit `np.mean`; added a deterministic tie-inducing regression test, verified to fail against the old code; re-ran **only** the offline decision layer | 10/10 + 18/18 tests pass. No dump regenerated, no model refitted, no calibration rule touched, `PREREGISTRATION_v2.md` unchanged |
+| 2 | Verified the preregistered primary is unaffected | `primary/` and `factorial/` outputs **bit-for-bit identical** pre- and post-fix. Only the `moving_average` row of the secondary table moved; no significance flipped |
+| 3 | Ran FAR 0.03 and 0.07 through the **identical** §3.1 criterion, labelled secondary | Verdict unchanged at all three targets. Generated decision files state explicitly that they are not the primary |
+| 4 | Archived rather than deleted; added `results/PROVENANCE.md`; banners on three superseded v1 documents | Duplicate dump moved to `results/archive/…__duplicate_of_f3`; v1-rule CSVs quarantined under `f3/unused_v1rule/` |
+| 5 | Updated this document | B1 marked resolved with measured post-fix evidence |
+
+## Final confirmatory result
+
+**Primary (FAR 0.05, preregistered):** *Hysteresis offers no measurable advantage over its components on
+this benchmark.* Criterion 1 not met (Holm p = 0.69 both comparisons), criterion 2 not met (FRR
++0.074 [0.032, 0.119] vs dwell-only; +0.030 [−0.008, 0.069] vs margin-only), criterion 3 met.
+
+## Declared sensitivity (secondary, §4.2) — the verdict is stable, the reason is not
+
+| Target | H vs D excess (Holm p) | H vs M excess (Holm p) | Crit. 1 | Crit. 2 (FRR upper bound) | Verdict |
+|---|---|---|---|---|---|
+| 0.03 | −0.251 (0.075) | −0.278 (0.179) | not met | not met (+0.108 / +0.061) | no advantage |
+| **0.05 (primary)** | −0.129 (0.688) | −0.199 (0.688) | not met | not met (+0.119 / +0.069) | **no advantage** |
+| 0.07 | −0.351 (**0.008**) | −0.688 (**0.008**) | **met** | not met (+0.056 / +0.060) | no advantage |
+
+This must be reported carefully. At the loosest target hysteresis **does** show a statistically detectable
+reduction in excess transitions — consistent with the floor effect documented in B2, since a looser
+operating point leaves more instability to remove. But the FRR non-inferiority requirement fails at
+**every** target, so the preregistered conjunctive criterion is not met anywhere. The correct statement is
+that the null holds across the operating-point range examined, and that at looser targets hysteresis buys
+stability at an FRR cost rather than for free. **It is not a licence to report FAR 0.07 as a hysteresis
+win.**
+
+## Freeze conditions
+
+* Frozen inputs: `mechanism_comparison_v2/{f3,f7}/scores/` — immutable, produced at `f42f55c`, seed 20260918.
+* Frozen rules: `docs/Stage2/PREREGISTRATION_v2.md`, unmodified since `4802aa5`.
+* Analysis code is **no longer byte-identical to the freeze** `f42f55c`; it differs by the three items in
+  `d39ee79`, each recorded there and none of which alters a preregistered rule. Anyone re-verifying should
+  diff `f42f55c..d39ee79` over `src/`, `scripts/`, `tests/` and read that commit message as the deviation log.
+* Reproduction: one command, ~70 s, no refit — see `results/PROVENANCE.md`.
+
+## Out of scope from here (agreed)
+
+No new mechanism, dataset, model family, subgroup analysis or confirmatory hypothesis. No further attempt to
+make the primary criterion pass. The null is the result.
+
+## Thesis framing (agreed position)
+
+The contribution is **the methodological framework and the preregistered comparison**: separation of
+authentication-score generation from the decision layer; chronological genuine separation; participant-disjoint
+pools with unseen test impostors; controlled identity-transition sequences built from real observations;
+frame-based temporal parameters grounded in the measured ~1 min cadence; security, stability and
+responsiveness reported separately with explicit missed-event accounting; participant-level paired inference;
+and a preregistered, conjunctive decision criterion with a committed null.
+
+The **principal empirical result** is the null: a cellular-handover-inspired hysteresis mechanism did not
+demonstrate additional temporal stabilisation beyond its own components (dwell and margin) under these
+conditions. Temporal persistence alone accounted for most of the observed reduction in excess transitions
+(instantaneous 2.012 → dwell k=2 0.466 per sequence), and stronger stabilisation traded stability for
+false rejection and recovery failure.
+
+Frame it as neither a failed proposal nor a claim that any mechanism is universally superior. The hysteresis
+hypothesis was tested properly and not supported; the trade-off structure is the finding; SPRT is a notable
+secondary observation whose larger search space precludes a headline claim; and the F3/F7 probe
+(AUC 0.990 vs 0.758) leaves missingness as a stated residual construct-validity limitation that this dataset
+cannot fully resolve.
+
+## Next phase
+
+1. Literature verification per Part D, adversarial kill-shot search first.
+2. Novelty assessment against what that search returns.
+3. Results and discussion chapters on the frozen record above.

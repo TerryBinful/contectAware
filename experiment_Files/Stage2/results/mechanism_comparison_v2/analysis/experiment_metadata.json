@@ -1,11 +1,11 @@
 {
-  "git_commit": "f208f9583a8009e3782acd94747eee14580c6b8e",
+  "git_commit": "d39ee79eaf0cb832a2c4f73fd94700b6ba48f281",
   "analysis_code_dirty": false,
   "dirty_files": [],
   "code_sha256": {
-    "src/decision_v2.py": "abf4ff38ee444f9a1373ffec0b29c59758ab5d3128312fba03561a8b83994e7f",
+    "src/decision_v2.py": "11c33cafcf1ae37d5245ddbcc9615e1b693e4be58a6cce33dd55272166b1af02",
     "src/metrics.py": "5ef6cc82794c98d621928cecc48aa83944217607332a566b107c86710f369ceb",
-    "scripts/decision_layer_offline.py": "9dcc0b8a5101fedfac0dfd707507228a186cee09315fab336b0b42ab0da3e978"
+    "scripts/decision_layer_offline.py": "2109aefe9b750e3aa60ba7dcf250d683b9a3e0dbdb7ed80a5f483e34b64fd774"
   },
   "preregistration": "docs/Stage2/PREREGISTRATION_v2.md",
   "implementation_notes": "docs/Stage2/V2_ANALYSIS_IMPLEMENTATION_NOTES.md",
@@ -18,9 +18,9 @@
     "allow_dirty": false,
     "max_users": null
   },
-  "started": "2026-09-26T16:52:35",
+  "started": "2026-09-26T19:49:54",
   "confirmatory": true,
-  "finished": "2026-09-26T16:53:44",
+  "finished": "2026-09-26T19:51:08",
   "n_users": 31,
   "primary_criterion_met": false
 }

@@ -1,5 +1,12 @@
 # STAGE 2 — SENSITIVITY ANALYSIS REPORT
 
+> **SUPERSEDED — Stage 2 v1.** This document describes the **v1** rules (symmetric FAR band,
+> v1 SPRT grid, v1 stability framing) and is retained as exploratory provenance. It is superseded by
+> `docs/Stage2/V2_RESULTS.md` and `docs/Stage2/V2_FORENSIC_AUDIT_AND_PLAN.md`. In particular its claim
+> that SPRT is structurally infeasible (23/31 users) does **not** hold under v2, where SPRT is feasible
+> for 31/31. Do not cite figures from this document as final results.
+
+
 Generated 2026-09-26 05:30:47. Primary analysis: `results/mechanism_comparison` (commit `a0e36cb4`, seed 20260918).
 
 **These are secondary analyses. The primary result remains the 31-user analysis at FAR 0.05 ± 0.01 and is not modified by anything in this report.**

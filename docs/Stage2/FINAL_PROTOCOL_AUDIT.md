@@ -1,5 +1,12 @@
 # FINAL PROTOCOL AUDIT — corrected Stage 2 mechanism comparison
 
+> **SUPERSEDED — Stage 2 v1.** This document describes the **v1** rules (symmetric FAR band,
+> v1 SPRT grid, v1 stability framing) and is retained as exploratory provenance. It is superseded by
+> `docs/Stage2/V2_RESULTS.md` and `docs/Stage2/V2_FORENSIC_AUDIT_AND_PLAN.md`. In particular its claim
+> that SPRT is structurally infeasible (23/31 users) does **not** hold under v2, where SPRT is feasible
+> for 31/31. Do not cite figures from this document as final results.
+
+
 Scope: the corrected final run in `results/mechanism_comparison/`. The pre-correction run is archived,
 clearly labelled exploratory, in `results/stage2_exploratory_pre_calibration_fix/` and must not be mixed
 with these results. Run-specific counts are in `docs/Stage2/STAGE2_FINAL_CORRECTED_EXECUTION_REPORT.md`.

@@ -1,5 +1,12 @@
 # STAGE 2 — FINAL CORRECTED EXECUTION REPORT
 
+> **SUPERSEDED — Stage 2 v1.** This document describes the **v1** rules (symmetric FAR band,
+> v1 SPRT grid, v1 stability framing) and is retained as exploratory provenance. It is superseded by
+> `docs/Stage2/V2_RESULTS.md` and `docs/Stage2/V2_FORENSIC_AUDIT_AND_PLAN.md`. In particular its claim
+> that SPRT is structurally infeasible (23/31 users) does **not** hold under v2, where SPRT is feasible
+> for 31/31. Do not cite figures from this document as final results.
+
+
 Generated from `results/mechanism_comparison/`. Experiment id `postpivot_mechanism_comparison_v1_20260926T003304`, git commit
 `a0e36cb4`, seed 20260918. Pre-correction results are archived separately in
 `results/stage2_exploratory_pre_calibration_fix/` and are not mixed into anything below.
