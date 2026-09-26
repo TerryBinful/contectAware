@@ -1,0 +1,45 @@
+=== POST-PIVOT MECHANISM COMPARISON === stage2_sensitivity_far003_20260926T023749
+31 eligible users (regular cohort); running 31; pools fit/calib/test = 24/12/24
+[1/31] 098A72A5: 6 test seq, 6 calib seq, 9 mechanisms (79s)
+[2/31] 0A986513: 6 test seq, 6 calib seq, 9 mechanisms (72s)
+[3/31] 136562B6: 6 test seq, 6 calib seq, 9 mechanisms (71s)
+[4/31] 1538C99F: 5 test seq, 6 calib seq, 9 mechanisms (73s)
+[5/31] 24E40C4C: 6 test seq, 6 calib seq, 9 mechanisms (71s)
+[6/31] 2C32C23E: 6 test seq, 6 calib seq, 9 mechanisms (72s)
+=== POST-PIVOT MECHANISM COMPARISON === stage2_sensitivity_far003_20260926T024558
+31 eligible users (regular cohort); running 31; pools fit/calib/test = 24/12/24
+RESUME: 6 users done; carried forward 54 calibration, 35 benchmark, 6 generator rows
+[7/31] 3600D531: 5 test seq, 6 calib seq, 9 mechanisms (126s)
+[7/31] 3600D531: 5 test seq, 6 calib seq, 9 mechanisms (158s)
+[8/31] 4FC32141: 4 test seq, 6 calib seq, 9 mechanisms (145s)
+[9/31] 5119D0F8: 6 test seq, 6 calib seq, 9 mechanisms (76s)
+[10/31] 5152A2DF: 6 test seq, 6 calib seq, 9 mechanisms (74s)
+[11/31] 5EF64122: 6 test seq, 6 calib seq, 9 mechanisms (71s)
+[12/31] 61976C24: 6 test seq, 6 calib seq, 9 mechanisms (74s)
+[13/31] 78A91A4E: 6 test seq, 6 calib seq, 9 mechanisms (77s)
+[14/31] 7CE37510: 6 test seq, 6 calib seq, 9 mechanisms (75s)
+[15/31] 7D9BB102: 6 test seq, 6 calib seq, 9 mechanisms (68s)
+[16/31] 8023FE1A: 4 test seq, 6 calib seq, 9 mechanisms (75s)
+[17/31] 83CF687B: 5 test seq, 6 calib seq, 9 mechanisms (72s)
+[18/31] 9759096F: 6 test seq, 6 calib seq, 9 mechanisms (75s)
+[19/31] 9DC38D04: 6 test seq, 6 calib seq, 9 mechanisms (76s)
+[20/31] A5CDF89D: 6 test seq, 6 calib seq, 9 mechanisms (72s)
+[21/31] A76A5AF5: 6 test seq, 6 calib seq, 9 mechanisms (73s)
+[22/31] B09E373F: 6 test seq, 6 calib seq, 9 mechanisms (73s)
+[23/31] B9724848: 6 test seq, 6 calib seq, 9 mechanisms (72s)
+[24/31] BE3CA5A6: 6 test seq, 6 calib seq, 9 mechanisms (73s)
+[25/31] CA820D43: 6 test seq, 6 calib seq, 9 mechanisms (73s)
+=== POST-PIVOT MECHANISM COMPARISON === stage2_sensitivity_far003_20260926T044319
+31 eligible users (regular cohort); running 31; pools fit/calib/test = 24/12/24
+RESUME: 25 users done; carried forward 225 calibration, 143 benchmark, 25 generator rows
+[26/31] CDA3BBF7: 6 test seq, 6 calib seq, 9 mechanisms (70s)
+[27/31] CF722AA9: 6 test seq, 6 calib seq, 9 mechanisms (65s)
+[28/31] D7D20E2E: 6 test seq, 6 calib seq, 9 mechanisms (66s)
+[29/31] E65577C1: 6 test seq, 6 calib seq, 9 mechanisms (63s)
+[30/31] ECECC2AB: 6 test seq, 6 calib seq, 9 mechanisms (64s)
+[31/31] FDAA70A1: 6 test seq, 6 calib seq, 9 mechanisms (65s)
+EXECUTION SUMMARY: users done=31, sequence-rows=1611, failures=0
+=== POST-PIVOT MECHANISM COMPARISON === stage2_sensitivity_far003_20260926T052235
+31 eligible users (regular cohort); running 31; pools fit/calib/test = 24/12/24
+RESUME: 31 users done; carried forward 279 calibration, 179 benchmark, 31 generator rows
+EXECUTION SUMMARY: users done=31, sequence-rows=1611, failures=0

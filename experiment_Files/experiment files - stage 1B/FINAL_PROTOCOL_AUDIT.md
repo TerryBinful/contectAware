@@ -56,7 +56,7 @@ every mechanism consumes the identical score stream (verified: identical sequenc
 
 Raw decision variable = classifier log-odds (`decision_function`), because predicted probabilities compress to
 ~1e-5 out of sample and destroy threshold resolution. Log-odds are then mapped through an ECDF fitted on
-**calibration scores only**. Both transforms are strictly monotone, so ranking, ROC and AUC are unchanged, and no
+**calibration scores only**. Both transforms are monotone non-decreasing (the ECDF has flat sections wherever scores tie), so the score ranking, ROC and AUC are unchanged up to ties, and no
 test data enter the normaliser.
 
 ## 10. Calibration procedure
@@ -127,6 +127,28 @@ Unit of analysis is the enrolled user: sequence metrics are averaged within user
 not treated as independent. Paired Wilcoxon signed-rank tests of each mechanism against the instantaneous
 baseline, Holm-corrected across the eight comparisons per metric, with bootstrap 95% CIs. Tests are fixed in
 `scripts/analyse_mechanism_comparison.py` in advance, not selected after inspecting results.
+
+### 19a. Dependence structure and its limits (explicit)
+
+The participant-level analysis treats each enrolled user as one observation, which is the appropriate
+unit here, but it does **not** make the observations fully independent. Three dependencies remain and
+are not removed by the statistical design:
+
+1. **Shared final-test impostor pool.** All enrolled users are evaluated against the same 24-participant
+   test impostor pool. Two enrolled users' FAR values therefore depend partly on the same impostor
+   behaviour, so they are not independent with respect to impostor composition. The paired tests compare
+   mechanisms *within* a user, which controls user-level variation, but the cross-user aggregation still
+   shares impostor material.
+2. **Reuse of underlying observations across sequences.** The 6 sequences per user are drawn from the same
+   test partition and the same impostor recordings, with disjointness enforced only between a sequence's
+   genuine and recovery blocks. Frames can therefore recur across sequences of the same user.
+3. **Sequences are not subjects.** Sequence metrics are averaged within enrolled user before any test;
+   sequences are never treated as independent subjects, and frames are never treated as independent.
+
+Consequence: p-values and bootstrap intervals should be read as describing variation across these 31
+enrolled users under a shared impostor pool, not as inference about a population of independent
+user-impostor pairs. No correction for the shared pool is applied, because the unit of analysis is
+already the participant; the dependence is documented rather than silently adjusted.
 
 ## 20. Leakage checks
 

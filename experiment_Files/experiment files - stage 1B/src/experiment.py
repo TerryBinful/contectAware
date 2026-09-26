@@ -127,7 +127,7 @@ class ScoreGenerator:
     monotone transform, so ranking, ROC and AUC are unchanged.
 
     Optionally an ECDF normaliser (`fit_normaliser`) maps raw scores to [0, 1] using the empirical
-    distribution of CALIBRATION scores only. It is strictly monotone (AUC unchanged) and puts every
+    distribution of CALIBRATION scores only. It is a monotone non-decreasing empirical CDF transformation (AUC unchanged up to ties) and puts every
     user on a common scale so that one operating-point rule applies across users and mechanisms.
     Test data are never used to fit it.
     """

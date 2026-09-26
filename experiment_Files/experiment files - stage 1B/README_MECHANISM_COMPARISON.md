@@ -40,9 +40,9 @@ produces the score stream consumed by all nine mechanisms; no mechanism-specific
 
 Two measured properties drive two documented implementation decisions:
 1. Predicted probabilities compress to ~1e-5 out-of-sample, so the raw decision variable is the
-   **log-odds** (`decision_function`) — a strictly monotone transform (AUC unchanged).
+   **log-odds** (`decision_function`) — a monotone non-decreasing transform (AUC unchanged).
 2. Scores are then mapped through an **ECDF fitted on calibration scores only** to put every user on a
-   common [0, 1] scale — also strictly monotone, and no test data are involved.
+   common [0, 1] scale — also monotone non-decreasing, and no test data are involved.
 
 Primary feature set: `F3_NO_LOC_NO_DEVSTATE` (phone motion, audio, ambient), excluding location and
 device-state. Justification is empirical: in the Stage 2 ablation (13 users), removing those groups changed
