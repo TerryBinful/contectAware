@@ -1,7 +1,0 @@
-{
-  "file": "operating_points.csv",
-  "sha256": "4ff036902a48fff9a369727a44dffd1fc4926d6f25ce7e63e81751d7fc800cd2",
-  "frozen_utc": "2026-09-25T06:00:48Z",
-  "selection_condition": "M",
-  "note": "written before any test-partition computation"
-}

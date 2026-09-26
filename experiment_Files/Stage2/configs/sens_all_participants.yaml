@@ -1,5 +1,0 @@
-# SENSITIVITY — include fragmented-cadence participants (cohort mode 'all'). Frames of these users are
-# not 60 s apart, so frame-based parameters lose their fixed time meaning. Robustness check only.
-extends: main.yaml
-experiment: {label: sens_all_participants, status: sensitivity}
-cohort: {mode: all}
