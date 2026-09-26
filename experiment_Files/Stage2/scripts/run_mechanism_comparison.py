@@ -16,6 +16,8 @@ def main():
     ap.add_argument('--config', required=True); ap.add_argument('--data', required=True)
     ap.add_argument('--out', required=True); ap.add_argument('--max-users', type=int, default=None)
     ap.add_argument('--resume', action='store_true')
+    ap.add_argument('--dry-run', action='store_true',
+                    help='validate schema, classify participants, build pools and report the planned runs; train nothing')
     a = ap.parse_args(); cfg = json.load(open(a.config)); seed = cfg['seed']
     for d in ['', 'manifests', 'benchmark', 'calibration', 'logs', 'figures', 'tables']:
         os.makedirs(os.path.join(a.out, d), exist_ok=True)
@@ -44,6 +46,12 @@ def main():
                    mechanisms=M.MECHANISM_ORDER, operating_point=dict(target_FAR=cfg['target_far'], tolerance=cfg['far_tolerance']),
                    environment=experiment.env_info(), started=time.strftime('%Y-%m-%dT%H:%M:%S')),
               open(os.path.join(a.out, 'experiment_metadata.json'), 'w'), indent=2, default=str)
+
+    if a.dry_run:
+        say(f'DRY RUN: {len(users)} enrolled users x {len(M.MECHANISM_ORDER)} mechanisms planned; '
+            f'feature set {cfg["feature_set"]}, score model {cfg["score_model"]}, '
+            f'target FAR {cfg["target_far"]} +/- {cfg["far_tolerance"]}. No model was trained.')
+        return
 
     seq_rows, cal_rows, bench_rows, gen_rows, failures = [], [], [], [], []
     done = set()
