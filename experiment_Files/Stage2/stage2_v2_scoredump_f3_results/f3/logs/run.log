@@ -1,0 +1,37 @@
+=== POST-PIVOT MECHANISM COMPARISON === stage2_v2_mechanism_comparison_20260926T144939
+31 eligible users (regular cohort); running 31; pools fit/calib/test = 24/12/24
+DRY RUN: 31 enrolled users x 9 mechanisms planned; feature set F3_NO_LOC_NO_DEVSTATE, score model gradient_boosting, target FAR 0.05 +/- 0.01. No model was trained.
+=== POST-PIVOT MECHANISM COMPARISON === stage2_v2_mechanism_comparison_20260926T144954
+31 eligible users (regular cohort); running 31; pools fit/calib/test = 24/12/24
+[1/31] 098A72A5: 6 test seq, 24 calib seq, 9 mechanisms (150s)
+[2/31] 0A986513: 6 test seq, 24 calib seq, 9 mechanisms (137s)
+[3/31] 136562B6: 6 test seq, 24 calib seq, 9 mechanisms (137s)
+[4/31] 1538C99F: 6 test seq, 24 calib seq, 9 mechanisms (116s)
+[5/31] 24E40C4C: 6 test seq, 24 calib seq, 9 mechanisms (134s)
+[6/31] 2C32C23E: 6 test seq, 24 calib seq, 9 mechanisms (128s)
+[7/31] 3600D531: 6 test seq, 24 calib seq, 9 mechanisms (131s)
+[8/31] 4FC32141: 5 test seq, 24 calib seq, 9 mechanisms (130s)
+[9/31] 5119D0F8: 6 test seq, 24 calib seq, 9 mechanisms (139s)
+[10/31] 5152A2DF: 5 test seq, 24 calib seq, 9 mechanisms (141s)
+[11/31] 5EF64122: 6 test seq, 24 calib seq, 9 mechanisms (130s)
+[12/31] 61976C24: 6 test seq, 24 calib seq, 9 mechanisms (139s)
+[13/31] 78A91A4E: 6 test seq, 24 calib seq, 9 mechanisms (142s)
+[14/31] 7CE37510: 5 test seq, 24 calib seq, 9 mechanisms (140s)
+[15/31] 7D9BB102: 6 test seq, 24 calib seq, 9 mechanisms (131s)
+[16/31] 8023FE1A: 6 test seq, 24 calib seq, 9 mechanisms (140s)
+[17/31] 83CF687B: 6 test seq, 24 calib seq, 9 mechanisms (134s)
+[18/31] 9759096F: 6 test seq, 24 calib seq, 9 mechanisms (138s)
+[19/31] 9DC38D04: 5 test seq, 24 calib seq, 9 mechanisms (139s)
+[20/31] A5CDF89D: 6 test seq, 24 calib seq, 9 mechanisms (129s)
+[21/31] A76A5AF5: 5 test seq, 24 calib seq, 9 mechanisms (136s)
+[22/31] B09E373F: 6 test seq, 24 calib seq, 9 mechanisms (137s)
+[23/31] B9724848: 4 test seq, 24 calib seq, 9 mechanisms (118s)
+[24/31] BE3CA5A6: 6 test seq, 24 calib seq, 9 mechanisms (138s)
+[25/31] CA820D43: 6 test seq, 24 calib seq, 9 mechanisms (136s)
+[26/31] CDA3BBF7: 6 test seq, 24 calib seq, 9 mechanisms (131s)
+[27/31] CF722AA9: 6 test seq, 24 calib seq, 9 mechanisms (133s)
+[28/31] D7D20E2E: 6 test seq, 24 calib seq, 9 mechanisms (136s)
+[29/31] E65577C1: 6 test seq, 24 calib seq, 9 mechanisms (128s)
+[30/31] ECECC2AB: 6 test seq, 24 calib seq, 9 mechanisms (131s)
+[31/31] FDAA70A1: 6 test seq, 24 calib seq, 9 mechanisms (129s)
+EXECUTION SUMMARY: users done=31, sequence-rows=1611, failures=0
