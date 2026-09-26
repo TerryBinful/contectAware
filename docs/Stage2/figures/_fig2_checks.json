@@ -1,0 +1,62 @@
+[
+  {
+    "check": "fig2 Instantaneous at FAR 0.05 (FRR, excess)",
+    "value": "0.0421, 2.0122",
+    "note": "CI FRR [0.0134, 0.0793]; CI excess [0.9676, 3.3078]; n=30"
+  },
+  {
+    "check": "fig2 Moving average at FAR 0.05 (FRR, excess)",
+    "value": "0.0603, 0.5344",
+    "note": "CI FRR [0.0318, 0.0953]; CI excess [0.2602, 0.8656]; n=31"
+  },
+  {
+    "check": "fig2 EWMA at FAR 0.05 (FRR, excess)",
+    "value": "0.0671, 0.5204",
+    "note": "CI FRR [0.0377, 0.1023]; CI excess [0.2258, 0.9109]; n=31"
+  },
+  {
+    "check": "fig2 Majority vote at FAR 0.05 (FRR, excess)",
+    "value": "0.0482, 0.4258",
+    "note": "CI FRR [0.0214, 0.0838]; CI excess [0.2107, 0.6785]; n=31"
+  },
+  {
+    "check": "fig2 Debounce (dwell) at FAR 0.05 (FRR, excess)",
+    "value": "0.0487, 0.3215",
+    "note": "CI FRR [0.0212, 0.0847]; CI excess [0.1236, 0.5560]; n=31"
+  },
+  {
+    "check": "fig2 Margin (dual threshold) at FAR 0.05 (FRR, excess)",
+    "value": "0.0834, 0.4026",
+    "note": "CI FRR [0.0345, 0.1408]; CI excess [0.1396, 0.7372]; n=26"
+  },
+  {
+    "check": "fig2 Margin + dwell at FAR 0.05 (FRR, excess)",
+    "value": "0.1244, 0.2028",
+    "note": "CI FRR [0.0731, 0.1776]; CI excess [0.1022, 0.3078]; n=30"
+  },
+  {
+    "check": "fig2 Trust model (dual \u03c4) at FAR 0.05 (FRR, excess)",
+    "value": "0.1717, 0.0376",
+    "note": "CI FRR [0.1301, 0.2168]; CI excess [0.0000, 0.0860]; n=31"
+  },
+  {
+    "check": "fig2 Trust model (single \u03c4) at FAR 0.05 (FRR, excess)",
+    "value": "0.0800, 0.1720",
+    "note": "CI FRR [0.0527, 0.1142]; CI excess [0.0753, 0.2914]; n=31"
+  },
+  {
+    "check": "fig2 SPRT at FAR 0.05 (FRR, excess)",
+    "value": "0.0361, 0.3215",
+    "note": "CI FRR [0.0118, 0.0707]; CI excess [0.1473, 0.5495]; n=31"
+  },
+  {
+    "check": "fig2 points hidden inside the axis break",
+    "value": "none",
+    "note": "break spans excess 0.95-1.55"
+  },
+  {
+    "check": "fig2 feasible participants per mechanism (0.03/0.05/0.07)",
+    "value": "18-31",
+    "note": "Instantaneous 30/30/29; Moving average 31/31/31; EWMA 31/31/29; Majority vote 31/31/31; Debounce (dwell) 31/31/31; Margin (dual threshold) 18/26/23; Margin + dwell 30/30/31; Trust model (dual \u03c4) 31/31/31; Trust model (single \u03c4) 31/31/31; SPRT 31/31/29"
+  }
+]

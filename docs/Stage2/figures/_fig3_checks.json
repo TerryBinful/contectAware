@@ -1,0 +1,32 @@
+[
+  {
+    "check": "fig3 gate: top 5 of 30 share",
+    "value": "0.6560",
+    "note": "target 0.656; PASS"
+  },
+  {
+    "check": "fig3 gate: participants with zero excess",
+    "value": "10/30",
+    "note": "target 10/30; PASS"
+  },
+  {
+    "check": "fig3 gate: sequences with zero excess",
+    "value": "124/173",
+    "note": "target 124/173; PASS"
+  },
+  {
+    "check": "fig3 participants plotted",
+    "value": "30",
+    "note": "one point per participant"
+  },
+  {
+    "check": "fig3 sequences behind the means",
+    "value": "173",
+    "note": "5.77 sequences per participant on average (5-6 each)"
+  },
+  {
+    "check": "fig3 max per-participant mean excess",
+    "value": "16.0000",
+    "note": "participant 7CE37510-56D0-4120-A1CF-0E23351428D2"
+  }
+]

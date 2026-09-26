@@ -1,0 +1,47 @@
+[
+  {
+    "check": "fig4 participants plotted",
+    "value": "31",
+    "note": "summary json says n_users=31"
+  },
+  {
+    "check": "fig4 mean AUC F3",
+    "value": "0.990121",
+    "note": "summary json 0.990121; match=True"
+  },
+  {
+    "check": "fig4 mean AUC F7",
+    "value": "0.758470",
+    "note": "summary json 0.758470; match=True"
+  },
+  {
+    "check": "fig4 annotated means (3 dp)",
+    "value": "0.990 -> 0.758",
+    "note": "paper text: 0.990 -> 0.758"
+  },
+  {
+    "check": "fig4 paired diff and CI",
+    "value": "0.232 [0.191, 0.273]",
+    "note": "paper text: 0.232 [0.191, 0.273]"
+  },
+  {
+    "check": "fig4 mean of per-participant diffs equals summary mean",
+    "value": "0.231650",
+    "note": "summary 0.231650; match=True"
+  },
+  {
+    "check": "fig4 AUC falls / rises / unchanged",
+    "value": "30 / 0 / 1",
+    "note": ""
+  },
+  {
+    "check": "fig4 participants at or below chance under F7",
+    "value": "1",
+    "note": "min AUC_F7 = 0.3995"
+  },
+  {
+    "check": "fig4 pairing",
+    "value": "complete",
+    "note": "every participant has both an F3 and an F7 AUC"
+  }
+]

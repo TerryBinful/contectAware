@@ -1,0 +1,21 @@
+{
+  "label": "POST HOC, NOT IN THE FROZEN PLAN",
+  "seed": 20260918,
+  "n_boot": 2000,
+  "target_FAR": 0.05,
+  "pairing": {
+    "D": {
+      "n_users_paired": 30,
+      "n_users_without_H": 1,
+      "n_users_without_comparator": 0,
+      "n_users_total": 31
+    },
+    "M": {
+      "n_users_paired": 24,
+      "n_users_without_H": 1,
+      "n_users_without_comparator": 6,
+      "n_users_total": 31
+    }
+  },
+  "routine": "src.decision_v2.bootstrap_mean_ci (the project bootstrap)"
+}

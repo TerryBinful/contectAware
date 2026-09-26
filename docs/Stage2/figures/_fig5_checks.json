@@ -1,0 +1,37 @@
+[
+  {
+    "check": "fig5 sequence drawn",
+    "value": "7CE37510_tsts1",
+    "note": "participant 7CE37510-56D0-4120-A1CF-0E23351428D2, split=test, 180 frames"
+  },
+  {
+    "check": "fig5 sequence layout",
+    "value": "60 genuine | 60 impostor | 60 genuine",
+    "note": "transition_idx=60, recovery_idx=120 in the score dump"
+  },
+  {
+    "check": "fig5 transitions instantaneous / dwell k=2 / margin 0.05 + dwell 2",
+    "value": "43 / 13 / 5",
+    "note": "minimum possible for this sequence is 2"
+  },
+  {
+    "check": "fig5 thresholds used",
+    "value": "m0_k1 theta=0.879111; m0_k2 theta=0.891811; m0.05_k2 theta=0.883948",
+    "note": "from factorial/operating_points.csv at target FAR 0.05 for this participant"
+  },
+  {
+    "check": "fig5 margin band",
+    "value": "[0.858948, 0.908948]",
+    "note": "theta -/+ m/2 with m = 0.05, as in src/decision_v2.sim_margin_dwell"
+  },
+  {
+    "check": "fig5 states come from the frozen module",
+    "value": "src.decision_v2.sim_margin_dwell",
+    "note": "not reimplemented in this script"
+  },
+  {
+    "check": "fig5 candidate participants (all three cells feasible at FAR 0.05)",
+    "value": "14",
+    "note": "from operating_points.csv"
+  }
+]

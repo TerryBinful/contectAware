@@ -1,0 +1,6 @@
+metric,reproduced,paper,point_estimate_abs_gap,point_estimate_matches_to_3dp,ci_lo_gap,ci_hi_gap
+recovery_failure,"+0.103 [0.028, 0.197]","+0.103 [0.033, 0.189]",0.000222,True,0.0052,0.0082
+recovery_latency_censored,"+7.990 [3.452, 13.569]","+7.990 [3.460, 13.370]",0.0,True,0.0081,0.1986
+lockout_fraction_during_genuine,"+0.074 [0.033, 0.122]","+0.074 [0.034, 0.119]",0.000417,True,0.0007,0.0028
+FAR,"+0.002 [-0.011, 0.015]","+0.002 [-0.012, 0.016]",0.000315,True,0.0006,0.001
+detection_latency_censored,"+0.500 [-0.261, 1.228]","+0.500 [-0.290, 1.240]",0.0,True,0.0287,0.0121

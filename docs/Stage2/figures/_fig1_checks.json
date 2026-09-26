@@ -1,0 +1,17 @@
+[
+  {
+    "check": "fig1 cells present at FAR 0.05",
+    "value": "17 of 20",
+    "note": ""
+  },
+  {
+    "check": "fig1 infeasible (greyed) cells",
+    "value": "3",
+    "note": ""
+  },
+  {
+    "check": "fig1 n_users_feasible range",
+    "value": "6-31",
+    "note": ""
+  }
+]
