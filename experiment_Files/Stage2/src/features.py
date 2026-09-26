@@ -23,6 +23,9 @@ FEATURE_SETS = {
         note='diagnostic: identity information carried by device/OS state alone'),
     'F6_MISSINGNESS_ONLY': dict(families=list(FAMILIES), missingness_only=True,
         note='diagnostic: binary NaN indicators only; tests the Stage 1 data-availability shortcut'),
+    'F7_F3_MISSINGNESS_ONLY': dict(families=['phone_motion', 'audio', 'lf_ambient'], missingness_only=True,
+        note='construct-validity probe: missingness indicators of the F3 columns ONLY. Bounds how much '
+             'of the primary score is data availability rather than behaviour. No decision layer is run on it.'),
 }
 
 def resolve(feature_cols, set_name):

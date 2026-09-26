@@ -46,26 +46,36 @@ def _take(blocks, need, rng, exclude=None):
     return b[st:st + need]
 
 
-def build_sequences(enrolled, ts_user, idx_partition, impostor_sources, cfg, rng):
-    """impostor_sources: {uuid: (ts, row_index_array)}  -> list of sequence dicts."""
+def build_sequences(enrolled, ts_user, idx_partition, impostor_sources, cfg, rng,
+                    n_sequences=None, round_robin=False, tag=''):
+    """impostor_sources: {uuid: (ts, row_index_array)} -> list of sequence dicts.
+
+    round_robin: cycle deterministically through the impostor pool instead of sampling with
+    replacement, so every pool member is represented. Used for CALIBRATION sequences, where v1
+    covered at most 6 of the 12 calibration impostors and calibration-to-test FAR drift followed.
+    n_sequences overrides cfg['sequences_per_user'] (calibration uses more sequences than test).
+    tag distinguishes calibration from test sequence ids, which would otherwise both start at _s0
+    and collide when the two splits are concatenated in the score dump.
+    """
     Lg, Li, Lr = cfg['block_genuine'], cfg['block_impostor'], cfg['block_recovery']
     gb = contiguous_blocks(ts_user, idx_partition, max(Lg, Lr), cfg['max_gap_s'])
     seqs = []
     imp_ids = sorted(impostor_sources)
     if not gb or not imp_ids:
         return seqs
-    for k in range(cfg['sequences_per_user']):
+    n_seq = n_sequences if n_sequences is not None else cfg['sequences_per_user']
+    for k in range(n_seq):
         g1 = _take(gb, Lg, rng)
         if g1 is None:
             continue
         g2 = _take(gb, Lr, rng, exclude=set(map(int, g1)))
-        iu = imp_ids[int(rng.integers(len(imp_ids)))]
+        iu = imp_ids[k % len(imp_ids)] if round_robin else imp_ids[int(rng.integers(len(imp_ids)))]
         its, iidx = impostor_sources[iu]
         ib = _take(contiguous_blocks(its, iidx, Li, cfg['max_gap_s']), Li, rng)
         if g1 is None or g2 is None or ib is None:
             continue
         seqs.append(dict(
-            sequence_id=f'{enrolled[:8]}_s{k}', enrolled_user=enrolled, impostor_user=iu,
+            sequence_id=f'{enrolled[:8]}_{tag}s{k}' if tag else f'{enrolled[:8]}_s{k}', enrolled_user=enrolled, impostor_user=iu,
             genuine_rows=g1, impostor_rows=ib, recovery_rows=g2,
             transition_idx=len(g1), recovery_idx=len(g1) + len(ib), length=len(g1) + len(ib) + len(g2),
             truth=np.r_[np.ones(len(g1)), np.zeros(len(ib)), np.ones(len(g2))].astype(int),

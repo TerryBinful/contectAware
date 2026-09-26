@@ -11,6 +11,37 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src import data_io, features, protocol, experiment, benchmark, calibrate, metrics
 from src import mechanisms as M
 
+def dump_score_streams(out, user, gen, cal_seqs, cal_streams, test_seqs, test_streams,
+                       score_u_raw, score_i_raw):
+    """Persist everything downstream of the model: per-frame raw and normalised scores, ground truth,
+    frame index, sequence id, impostor id and split, for every calibration and test sequence, plus the
+    user's frozen ECDF reference array.
+
+    Model fitting is ~92% of runtime (83 s vs 6 s per user, measured), so with this dump every
+    selection rule, mechanism parameter grid, metric and FAR target can be recomputed offline without
+    refitting anything.
+    """
+    d = os.path.join(out, 'scores'); os.makedirs(d, exist_ok=True)
+    rows = []
+    for split, seqs, streams in [('calib', cal_seqs, cal_streams), ('test', test_seqs, test_streams)]:
+        for s_, (scores, truth) in zip(seqs, streams):
+            raw = np.r_[score_u_raw(s_['genuine_rows']), score_i_raw(s_['impostor_user'], s_['impostor_rows']),
+                        score_u_raw(s_['recovery_rows'])]
+            rows.append(pd.DataFrame(dict(
+                enrolled_user=user, split=split, sequence_id=s_['sequence_id'],
+                impostor_user=s_['impostor_user'], frame=np.arange(len(scores)),
+                score=scores, raw_score=raw, truth=truth,
+                transition_idx=s_['transition_idx'], recovery_idx=s_['recovery_idx'])))
+    df = pd.concat(rows, ignore_index=True)
+    base = os.path.join(d, user[:8])
+    try:
+        df.to_parquet(base + '.parquet', index=False)
+    except Exception:
+        df.to_csv(base + '.csv.gz', index=False)          # pyarrow absent: still auditable
+    np.savez_compressed(base + '_ecdf.npz', ecdf_reference=gen._ref,
+                        meta=np.array([json.dumps(gen.meta, default=str)], dtype=object))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--config', required=True); ap.add_argument('--data', required=True)
@@ -83,8 +114,12 @@ def main():
                 for iu in pool:
                     if iu == u: continue
                     its, _ = ds.load(iu); src[pool_name][iu] = (its, np.arange(len(its)))
-            cal_seqs = benchmark.build_sequences(u, ts_u, parts['calib'], src['calib'], cfg, rng)
-            test_seqs = benchmark.build_sequences(u, ts_u, parts['test'], src['test'], cfg, rng)
+            cal_seqs = benchmark.build_sequences(u, ts_u, parts['calib'], src['calib'], cfg, rng,
+                                                 n_sequences=cfg.get('calib_sequences_per_user'),
+                                                 round_robin=cfg.get('calib_round_robin', False),
+                                                 tag='cal' if cfg.get('dump_scores') else '')
+            test_seqs = benchmark.build_sequences(u, ts_u, parts['test'], src['test'], cfg, rng,
+                                                  tag='tst' if cfg.get('dump_scores') else '')
             if not cal_seqs or not test_seqs:
                 raise RuntimeError(f'insufficient contiguous blocks (calib={len(cal_seqs)}, test={len(test_seqs)})')
             # fit the score normaliser on CALIBRATION raw scores only (monotone; no test data)
@@ -97,6 +132,10 @@ def main():
                 _, Xi = ds.load(uu); return gen.score(Xi[rows])
             cal_streams = [(benchmark.sequence_scores(s, score_u, score_imp), s['truth']) for s in cal_seqs]
             test_streams = [(benchmark.sequence_scores(s, score_u, score_imp), s['truth']) for s in test_seqs]
+            if cfg.get('dump_scores', False):
+                dump_score_streams(a.out, u, gen, cal_seqs, cal_streams, test_seqs, test_streams,
+                                   score_u_raw=lambda rows: gen.raw_score(X_u[rows]),
+                                   score_i_raw=lambda uu, rows: gen.raw_score(ds.load(uu)[1][rows]))
             sm = calibrate.estimate_score_models(cal_streams)
             # Threshold grid (calibration data only). A uniform quantile grid over the pooled
             # calibration scores is too coarse near the matched operating point, so it is refined
