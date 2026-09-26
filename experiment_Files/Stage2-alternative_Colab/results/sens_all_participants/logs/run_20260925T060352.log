@@ -1,0 +1,21 @@
+2026-09-25 06:03:52 | INFO    | Experiment stage2_mechanism_comparison-sens_all_participants-d5740075 | config configs/sens_all_participants.yaml | results /home/claude/contectAware/experiment_Files/Stage2/results/sens_all_participants | work /home/claude/contectAware/experiment_Files/Stage2/work/sens_all_participants/d57400752a3e
+2026-09-25 06:03:52 | INFO    | === stage audit: start
+2026-09-25 06:03:52 | INFO    | audit: checkpoint found
+2026-09-25 06:03:52 | INFO    | === stage audit: done in 0.0s
+2026-09-25 06:03:52 | INFO    | === stage split: start
+2026-09-25 06:03:52 | INFO    | === stage split: done in 0.0s
+2026-09-25 06:03:52 | INFO    | === stage scoring: start
+2026-09-25 06:03:52 | INFO    | === stage scoring: done in 0.0s
+2026-09-25 06:03:52 | INFO    | === stage benchmark: start
+2026-09-25 06:03:52 | INFO    | === stage benchmark: done in 0.0s
+2026-09-25 06:03:52 | INFO    | === stage sweep_val: start
+2026-09-25 06:03:52 | INFO    | === stage sweep_val: done in 0.0s
+2026-09-25 06:03:52 | INFO    | === stage select: start
+2026-09-25 06:03:52 | INFO    | === stage select: done in 0.0s
+2026-09-25 06:03:52 | INFO    | === stage evaluate: start
+2026-09-25 06:03:52 | INFO    | === stage evaluate: done in 0.0s
+2026-09-25 06:03:52 | INFO    | === stage stats: start
+2026-09-25 06:03:52 | INFO    | === stage stats: done in 0.0s
+2026-09-25 06:03:53 | INFO    | === stage report: start
+2026-09-25 06:03:58 | INFO    | Dataset found: 60 participant files in /home/claude/data/raw
+2026-09-25 06:03:58 | INFO    | === stage report: done in 5.6s

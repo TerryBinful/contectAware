@@ -1,0 +1,14 @@
+# raw data is never committed (download with scripts/download_data.py; MD5-verified)
+data/raw/
+*.zip
+*.part
+# regenerable caches, checkpoints, per-user score pickles
+work/
+__pycache__/
+*.pyc
+.pytest_cache/
+# reproducibility re-runs
+results/*_repro/
+# secrets
+.env
+*.key

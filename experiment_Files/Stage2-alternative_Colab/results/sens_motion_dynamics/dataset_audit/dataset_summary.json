@@ -1,0 +1,29 @@
+{
+  "n_participants": 60,
+  "n_frames": 377346,
+  "n_feature_columns": 225,
+  "n_label_columns": 51,
+  "pooled_median_gap_s": 60.0,
+  "pooled_mean_gap_s": 128.8643469410474,
+  "pooled_iqr_gap_s": [
+    60.0,
+    60.0
+  ],
+  "pooled_frac_gap_59_61": 0.7101323664275907,
+  "frame_period_s_used": 60.0,
+  "run_break_gap_s": 120.0,
+  "n_regular_cadence": 34,
+  "n_fragmented_cadence": 26,
+  "regular_fraction_gap_59_61_min": 0.9002624671916011,
+  "fragmented_fraction_gap_59_61_max": 0.5660764690787785,
+  "n_eligible": 33,
+  "n_excluded": 27,
+  "cell_missing_mean_over_participants": 0.16512923305331623,
+  "primary_feature_set": "phone_motion",
+  "n_primary_features": 36,
+  "participants_without_gyroscope": [
+    "61359772-D8D8-480D-B623-7C636EAD0C81",
+    "CCAF77F0-FABB-4F2F-9E24-D56AD0C5A82F",
+    "F50235E0-DD67-4F2A-B00B-1F31ADA998B9"
+  ]
+}

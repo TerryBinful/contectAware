@@ -1,0 +1,79 @@
+2026-09-25 05:40:47 | INFO    | Experiment stage2_mechanism_comparison-sens_original_features-1101b21f | config configs/sens_original_features.yaml | results /home/claude/contectAware/experiment_Files/Stage2/results/sens_original_features | work /home/claude/contectAware/experiment_Files/Stage2/work/sens_original_features/1101b21f302b
+2026-09-25 05:40:47 | INFO    | === stage audit: start
+2026-09-25 05:40:47 | INFO    | Dataset found: 60 participant files in /home/claude/data/raw
+2026-09-25 05:40:57 | INFO    | Dataset audit: 60 participants, median gap 60.0s, 34 regular, 33 eligible
+2026-09-25 05:40:57 | INFO    | === stage audit: done in 10.1s
+2026-09-25 05:40:57 | INFO    | === stage split: start
+2026-09-25 05:40:57 | INFO    | Split: cohort 33, genuine 33, excluded 27
+2026-09-25 05:40:57 | INFO    | === stage split: done in 0.0s
+2026-09-25 05:40:57 | INFO    | === stage scoring: start
+2026-09-25 05:41:02 | INFO    | Loaded 33 participants, 219361 frames, 103 features, 11 labels
+2026-09-25 05:41:03 | INFO    | [1/33] 00EABED2: test EER 0.063 AUC 0.978 (val EER 0.027) fit 1.2s
+2026-09-25 05:41:05 | INFO    | [2/33] 098A72A5: test EER 0.015 AUC 0.999 (val EER 0.057) fit 2.6s
+2026-09-25 05:41:07 | INFO    | [3/33] 0A986513: test EER 0.056 AUC 0.989 (val EER 0.051) fit 1.9s
+2026-09-25 05:41:10 | INFO    | [4/33] 11B5EC4D: test EER 0.027 AUC 0.997 (val EER 0.067) fit 2.7s
+2026-09-25 05:41:13 | INFO    | [5/33] 136562B6: test EER 0.051 AUC 0.991 (val EER 0.108) fit 2.5s
+2026-09-25 05:41:15 | INFO    | [6/33] 1538C99F: test EER 0.034 AUC 0.995 (val EER 0.083) fit 2.7s
+2026-09-25 05:41:18 | INFO    | [7/33] 24E40C4C: test EER 0.256 AUC 0.812 (val EER 0.211) fit 2.5s
+2026-09-25 05:41:21 | INFO    | [8/33] 2C32C23E: test EER 0.039 AUC 0.994 (val EER 0.026) fit 2.6s
+2026-09-25 05:41:23 | INFO    | [9/33] 3600D531: test EER 0.048 AUC 0.989 (val EER 0.173) fit 2.6s
+2026-09-25 05:41:25 | INFO    | [10/33] 4FC32141: test EER 0.109 AUC 0.968 (val EER 0.328) fit 2.2s
+2026-09-25 05:41:28 | INFO    | [11/33] 5119D0F8: test EER 0.013 AUC 0.999 (val EER 0.030) fit 2.6s
+2026-09-25 05:41:31 | INFO    | [12/33] 5152A2DF: test EER 0.143 AUC 0.919 (val EER 0.089) fit 2.6s
+2026-09-25 05:41:32 | INFO    | [13/33] 5EF64122: test EER 0.028 AUC 0.996 (val EER 0.029) fit 1.1s
+2026-09-25 05:41:34 | INFO    | [14/33] 61976C24: test EER 0.080 AUC 0.982 (val EER 0.027) fit 2.5s
+2026-09-25 05:41:37 | INFO    | [15/33] 78A91A4E: test EER 0.083 AUC 0.977 (val EER 0.026) fit 2.9s
+2026-09-25 05:41:40 | INFO    | [16/33] 7CE37510: test EER 0.048 AUC 0.992 (val EER 0.070) fit 2.8s
+2026-09-25 05:41:43 | INFO    | [17/33] 8023FE1A: test EER 0.074 AUC 0.983 (val EER 0.049) fit 2.5s
+2026-09-25 05:41:45 | INFO    | [18/33] 83CF687B: test EER 0.177 AUC 0.916 (val EER 0.050) fit 2.8s
+2026-09-25 05:41:48 | INFO    | [19/33] 9759096F: test EER 0.121 AUC 0.955 (val EER 0.025) fit 2.7s
+2026-09-25 05:41:51 | INFO    | [20/33] 9DC38D04: test EER 0.100 AUC 0.974 (val EER 0.046) fit 2.8s
+2026-09-25 05:41:53 | INFO    | [21/33] A5CDF89D: test EER 0.087 AUC 0.968 (val EER 0.022) fit 2.0s
+2026-09-25 05:41:55 | INFO    | [22/33] A76A5AF5: test EER 0.079 AUC 0.977 (val EER 0.138) fit 2.5s
+2026-09-25 05:41:58 | INFO    | [23/33] B09E373F: test EER 0.106 AUC 0.963 (val EER 0.118) fit 2.8s
+2026-09-25 05:42:01 | INFO    | [24/33] B9724848: test EER 0.127 AUC 0.959 (val EER 0.071) fit 2.4s
+2026-09-25 05:42:03 | INFO    | [25/33] BE3CA5A6: test EER 0.155 AUC 0.935 (val EER 0.136) fit 2.7s
+2026-09-25 05:42:05 | INFO    | [26/33] C48CE857: test EER 0.009 AUC 1.000 (val EER 0.072) fit 1.8s
+2026-09-25 05:42:08 | INFO    | [27/33] CA820D43: test EER 0.068 AUC 0.988 (val EER 0.061) fit 2.4s
+2026-09-25 05:42:09 | INFO    | [28/33] CDA3BBF7: test EER 0.000 AUC 1.000 (val EER 0.000) fit 1.3s
+2026-09-25 05:42:11 | INFO    | [29/33] CF722AA9: test EER 0.097 AUC 0.965 (val EER 0.097) fit 2.2s
+2026-09-25 05:42:14 | INFO    | [30/33] D7D20E2E: test EER 0.043 AUC 0.994 (val EER 0.102) fit 2.6s
+2026-09-25 05:42:15 | INFO    | [31/33] E65577C1: test EER 0.312 AUC 0.739 (val EER 0.081) fit 1.6s
+2026-09-25 05:42:18 | INFO    | [32/33] ECECC2AB: test EER 0.034 AUC 0.996 (val EER 0.062) fit 2.3s
+2026-09-25 05:42:20 | INFO    | [33/33] FDAA70A1: test EER 0.092 AUC 0.967 (val EER 0.072) fit 2.3s
+2026-09-25 05:42:20 | INFO    | Exp1: median test EER 0.074, median test AUC 0.982; gate PASSED
+2026-09-25 05:42:20 | INFO    | === stage scoring: done in 83.4s
+2026-09-25 05:42:20 | INFO    | === stage benchmark: start
+2026-09-25 05:42:22 | INFO    | Benchmark: 172 genuine streams, 2112 spliced sequences; M coverage 1.000 -> selection condition M
+2026-09-25 05:42:27 | INFO    | === stage benchmark: done in 6.7s
+2026-09-25 05:42:27 | INFO    | === stage sweep_val: start
+2026-09-25 05:42:28 | INFO    | sweep val/threshold: 141 cells in 0.2s
+2026-09-25 05:42:29 | INFO    | sweep val/moving_average: 705 cells in 1.0s
+2026-09-25 05:42:30 | INFO    | sweep val/ewma: 846 cells in 1.3s
+2026-09-25 05:42:35 | INFO    | sweep val/majority_vote: 564 cells in 5.5s
+2026-09-25 05:42:38 | INFO    | sweep val/debounce: 564 cells in 2.8s
+2026-09-25 05:42:40 | INFO    | sweep val/margin: 564 cells in 2.2s
+2026-09-25 05:42:53 | INFO    | sweep val/hysteresis: 2256 cells in 12.3s
+2026-09-25 05:43:00 | INFO    | sweep val/trust: 1692 cells in 7.4s
+2026-09-25 05:43:02 | INFO    | sweep val/sprt: 300 cells in 1.7s
+2026-09-25 05:43:03 | INFO    | sweep val/hmm: 705 cells in 1.1s
+2026-09-25 05:43:03 | INFO    | === stage sweep_val: done in 36.2s
+2026-09-25 05:43:03 | INFO    | === stage select: start
+2026-09-25 05:43:03 | INFO    | Operating points frozen (sha256 a2fc0928b4b6). Best smoother on validation: margin
+2026-09-25 05:43:03 | INFO    | === stage select: done in 0.3s
+2026-09-25 05:43:03 | INFO    | === stage evaluate: start
+2026-09-25 05:43:10 | INFO    | sweep test/threshold: 141 cells in 0.2s
+2026-09-25 05:43:11 | INFO    | sweep test/moving_average: 705 cells in 1.0s
+2026-09-25 05:43:13 | INFO    | sweep test/ewma: 846 cells in 1.5s
+2026-09-25 05:43:18 | INFO    | sweep test/majority_vote: 564 cells in 5.6s
+2026-09-25 05:43:21 | INFO    | sweep test/debounce: 564 cells in 2.9s
+2026-09-25 05:43:23 | INFO    | sweep test/margin: 564 cells in 2.2s
+2026-09-25 05:43:36 | INFO    | sweep test/hysteresis: 2256 cells in 12.9s
+2026-09-25 05:43:43 | INFO    | sweep test/trust: 1692 cells in 6.8s
+2026-09-25 05:43:45 | INFO    | sweep test/sprt: 300 cells in 1.9s
+2026-09-25 05:43:46 | INFO    | sweep test/hmm: 705 cells in 1.1s
+2026-09-25 05:43:46 | INFO    | === stage evaluate: done in 42.9s
+2026-09-25 05:43:46 | INFO    | === stage stats: start
+2026-09-25 05:43:48 | INFO    | === stage stats: done in 2.2s
+2026-09-25 05:43:49 | INFO    | === stage report: start
+2026-09-25 05:43:53 | INFO    | === stage report: done in 4.5s
