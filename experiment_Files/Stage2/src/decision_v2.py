@@ -31,10 +31,27 @@ def sim_instantaneous(S, theta):
     return (S[None, :, :] >= np.asarray(theta, float)[:, None, None]).astype(np.int8)
 
 def _moving_mean(S, w):
-    c = np.cumsum(np.pad(S, ((0, 0), (1, 0))), axis=1)
-    T = S.shape[1]; t = np.arange(T)
-    lo = np.maximum(t + 1 - w, 0)
-    return (c[:, t + 1] - c[:, lo]) / (t + 1 - lo)
+    """Trailing window mean, bit-for-bit identical to np.mean of the same window.
+
+    SECONDARY-ANALYSIS DEFECT FIX (2026-09-26). The previous implementation accumulated the
+    window sum with np.cumsum, which differs from np.mean's pairwise summation by ~7e-16.
+    Because the v2 theta grid is built from calibration-score quantiles, a window mean lands
+    EXACTLY on a candidate threshold often, and there the offset flipped `>= theta`. Measured
+    on the frozen v2 F3 dumps: 2.22% of (sequence, theta, w) combinations and 0.111% of frame
+    decisions diverged from the reference class src/mechanisms.MovingAverage.
+
+    Scope: `moving_average` is used ONLY in the secondary tuned-family comparison. The
+    preregistered primary factorial uses `margin_dwell` and is unaffected.
+
+    This changes no preregistered rule; it restores the equivalence to the v1 reference
+    semantics that V2_ANALYSIS_IMPLEMENTATION_NOTES.md already asserted. Regression test:
+    tests/test_decision_v2.py::test_moving_average_matches_numpy_mean_on_exact_ties.
+    """
+    T = S.shape[1]
+    out = np.empty(S.shape, dtype=float)
+    for t in range(T):                      # windows are short (<= 20) and T is 180
+        out[:, t] = S[:, max(0, t + 1 - w):t + 1].mean(axis=1)
+    return out
 
 def sim_moving_average(S, theta, w):
     theta, w = np.asarray(theta, float), np.asarray(w, int)

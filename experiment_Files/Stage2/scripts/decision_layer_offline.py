@@ -146,10 +146,17 @@ def paired_boot_diff(a, b, seed=0):
     d = np.asarray(a, float) - np.asarray(b, float)
     return D.bootstrap_mean_ci(d, n_boot=N_BOOT, seed=seed)
 
-def primary_analysis(fac_ops, fac_pu, out):
-    """§3.1. Cell selection on CALIBRATION FRR only; tests on TEST data."""
+def primary_analysis(fac_ops, fac_pu, out, target=PRIMARY_TARGET, confirmatory=True):
+    """§3.1. Cell selection on CALIBRATION FRR only; tests on TEST data.
+
+    `target` exists so the IDENTICAL preregistered criterion can be re-evaluated at the
+    declared sensitivity targets (§4.2) without duplicating the logic. No selection rule,
+    tie-break, metric or threshold changes with `target`; only the FAR value and the output
+    directory do. `confirmatory=False` marks the run as a secondary sensitivity in the
+    generated decision file, so a reader cannot mistake it for the preregistered primary.
+    """
     os.makedirs(out, exist_ok=True)
-    ops = fac_ops[(fac_ops.target == PRIMARY_TARGET) & fac_ops.feasible.astype(bool)]
+    ops = fac_ops[(fac_ops.target == target) & fac_ops.feasible.astype(bool)]
     sel = []
     for u, g in ops.groupby('enrolled_user'):
         row = dict(enrolled_user=u)
@@ -163,7 +170,7 @@ def primary_analysis(fac_ops, fac_pu, out):
                 row[f'cell_{lab}'] = None; row[f'cell_{lab}_calib_FRR'] = np.nan
         sel.append(row)
     sel = pd.DataFrame(sel); sel.to_csv(os.path.join(out, 'cell_selection.csv'), index=False)
-    pu = fac_pu[fac_pu.target == PRIMARY_TARGET].set_index(['enrolled_user', 'cell'])
+    pu = fac_pu[fac_pu.target == target].set_index(['enrolled_user', 'cell'])
     def val(u, c, k):
         return pu.loc[(u, c), k] if c is not None and (u, c) in pu.index else np.nan
     tests, curve = [], []
@@ -207,9 +214,16 @@ def primary_analysis(fac_ops, fac_pu, out):
                'both dwell-only and margin-only.' if met else
                'Hysteresis offers no measurable advantage over its components on this benchmark.')
     with open(os.path.join(out, 'PRIMARY_DECISION.md'), 'w') as f:
-        f.write('# Primary decision (PREREGISTRATION_v2 §3.1)\n\n')
-        f.write('Generated mechanically by scripts/decision_layer_offline.py. Target FAR 0.05, one-sided band '
-                '[0.04, 0.05], selection C1 with reachability filter C2, only theta tuned per cell.\n\n')
+        head = ('# Primary decision (PREREGISTRATION_v2 §3.1)' if confirmatory else
+                f'# SECONDARY SENSITIVITY at target FAR {target:.2f} (PREREGISTRATION_v2 §4.2)')
+        f.write(head + '\n\n')
+        if not confirmatory:
+            f.write('**This is NOT the preregistered primary result.** It re-evaluates the identical §3.1 '
+                    f'criterion at a declared sensitivity target. The confirmatory primary is at FAR '
+                    f'{PRIMARY_TARGET:.2f} in `primary/`.\n\n')
+        f.write('Generated mechanically by scripts/decision_layer_offline.py. Target FAR '
+                f'{target:.2f}, one-sided band [{target - 0.01:.2f}, {target:.2f}], selection C1 with '
+                'reachability filter C2, only theta tuned per cell.\n\n')
         f.write(f'**Verdict: {verdict}**\n\n')
         f.write('```\n' + T.T.to_string() + '\n```')
         f.write('\n\nCriteria: (1) fewer excess transitions, paired two-sided Wilcoxon, Holm-adjusted p < 0.05 across '
@@ -360,6 +374,9 @@ def main():
     family_analysis(fam_ops, fam_seq, os.path.join(a.out, 'families'), PRIMARY_TARGET)
     for t in SENSITIVITY_TARGETS:
         family_analysis(fam_ops, fam_seq, os.path.join(a.out, 'secondary', f'far_{t:.2f}'), t)
+        # §4.2 declared sensitivity: same criterion, same rules, secondary label
+        primary_analysis(fac_ops, fac_pu, os.path.join(a.out, 'secondary', f'factorial_far_{t:.2f}'),
+                         target=t, confirmatory=False)
     no_sprt_subset(fam_ops, fam_seq, os.path.join(a.out, 'secondary'))
     if a.f7_scores:
         score_validity(users, a.f7_scores, os.path.join(a.out, 'secondary'))

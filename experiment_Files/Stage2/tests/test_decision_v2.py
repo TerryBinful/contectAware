@@ -116,6 +116,40 @@ def test_end_to_end_self_test():
         mm = pd.read_csv(os.path.join(d, 'families', 'mechanism_metrics.csv'))
         assert list(mm.mechanism) == D.FAMILY_ORDER
 
+def test_moving_average_matches_numpy_mean_on_exact_ties():
+    """Deterministic regression test for the secondary-analysis moving_average defect.
+
+    No RNG. The score streams use values with short binary expansions, and the candidate
+    thresholds are set to the EXACT np.mean of the trailing windows, so a tie occurs at every
+    frame. The previous cumsum window mean differed from np.mean by ~7e-16 and therefore
+    flipped `>= theta` at those ties; random-float fixtures never expose this, which is why
+    test_batch_simulators_match_reference_classes passed while the defect was live.
+
+    Two assertions: (1) the internal window mean is bit-for-bit np.mean; (2) the batch
+    simulator reproduces src/mechanisms.MovingAverage frame for frame at tied thresholds.
+    """
+    # Values chosen so that floating-point accumulation genuinely diverges: these are
+    # non-terminating in binary, so a cumsum window sum differs from np.mean. (A fixture of
+    # exactly-representable values such as k/8 would make both paths agree and the test
+    # would pass against the defect -- verified, and rejected for that reason.)
+    S = np.array([[(i % 7) / 7.0 for i in range(60)],
+                  [((i % 9) + 1) / 10.0 for i in range(60)],
+                  [1 / 3.0] * 60], float)
+    for w in (3, 5, 10, 20):
+        ref = np.array([[S[j, max(0, t + 1 - w):t + 1].mean() for t in range(S.shape[1])]
+                        for j in range(S.shape[0])])
+        # (1) bit-for-bit equality with np.mean, not merely allclose
+        assert np.array_equal(D._moving_mean(S, w), ref), f'window mean != np.mean at w={w}'
+        # (2) thresholds that are exactly attained window means -> ties at every frame
+        thetas = sorted(set(ref.ravel().tolist()))
+        grid = [dict(theta=t, w=w) for t in thetas]
+        B = D.simulate('moving_average', grid, S)
+        for i, p in enumerate(grid):
+            for j in range(S.shape[0]):
+                assert np.array_equal(M.build('moving_average', p).run(S[j]), B[i, j]), \
+                    f'batch != reference class at w={w}, theta={p["theta"]!r}, seq={j}'
+
+
 if __name__ == '__main__':
     fns = [v for k, v in dict(globals()).items() if k.startswith('test_')]
     for f in fns:
