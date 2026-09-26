@@ -48,9 +48,19 @@ def main():
     seq_rows, cal_rows, bench_rows, gen_rows, failures = [], [], [], [], []
     done = set()
     seq_path = os.path.join(a.out, 'sequence_metrics.csv')
+    op_path = os.path.join(a.out, 'operating_points.csv')
+    bm_path = os.path.join(a.out, 'benchmark', 'sequence_manifest.csv')
+    sg_path = os.path.join(a.out, 'score_generator_manifest.csv')
     if a.resume and os.path.exists(seq_path):
+        # Every accumulating artefact must be reloaded. Otherwise a resumed session rewrites the
+        # calibration / benchmark / score-generator manifests with only the users it processed,
+        # silently truncating the audit trail for the users completed in earlier sessions.
         prev = pd.read_csv(seq_path); seq_rows = prev.to_dict('records'); done = set(prev.enrolled_user)
-        say(f'RESUME: {len(done)} users already done')
+        if os.path.exists(op_path): cal_rows = pd.read_csv(op_path).to_dict('records')
+        if os.path.exists(bm_path): bench_rows = pd.read_csv(bm_path).to_dict('records')
+        if os.path.exists(sg_path): gen_rows = pd.read_csv(sg_path).to_dict('records')
+        say(f'RESUME: {len(done)} users done; carried forward {len(cal_rows)} calibration, '
+            f'{len(bench_rows)} benchmark, {len(gen_rows)} generator rows')
 
     for ui, u in enumerate(users, 1):
         if u in done: continue
