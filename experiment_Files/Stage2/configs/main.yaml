@@ -1,0 +1,128 @@
+# =============================================================================
+# Stage 2 — Decision-layer stabilisation mechanism comparison — PRIMARY config
+# =============================================================================
+# Every value here is a pre-registered design decision. Rationale for each is in
+# docs/Stage2/PREREGISTRATION_FROZEN.md. Do not edit after the full run; create a
+# new config file (and a new results label) instead.
+
+experiment:
+  name: stage2_mechanism_comparison
+  label: main                 # results are written to results/<label>/
+  seed: 20260924              # master seed; all RNG streams derive from it
+  status: primary             # primary | pilot | sensitivity
+
+data:
+  dir: null                   # null -> $CA_DATA_DIR -> <Stage2>/data/raw
+  url: http://extrasensory.ucsd.edu/data/primary_data_files/ExtraSensory.per_uuid_features_labels.zip
+  md5: 9e44b3484b74cd8a370ff22894e0899b   # identical to the Stage 1 fingerprint
+  expected_participants: 60
+  auto_download: true
+
+paths:
+  results_root: results       # committed, reviewable outputs
+  work_root: work             # regenerable caches (git-ignored)
+
+cadence:
+  gap_break_factor: 2.0       # a run breaks where gap > 2 x median frame period (splice spec §2)
+  regular_band_s: [59, 61]
+  regular_min_fraction: 0.80  # cohort rule: >=80% of a participant's gaps in 59-61 s
+
+cohort:
+  mode: regular               # regular (primary) | all (secondary robustness)
+  max_genuine_users: null     # pilot only: limit number of GENUINE users evaluated
+  min_period_frames: 300      # min val and test frames per genuine user (pre-registered)
+
+periods:
+  fractions: [0.6, 0.2, 0.2]  # chronological train / val / test, per participant
+  embargo_minutes: 30         # frames within 30 min after a period boundary are dropped
+
+features:
+  set: phone_motion           # PRIMARY: phone accelerometer + gyroscope only
+  sets:
+    phone_motion: [raw_acc, proc_gyro]
+    original_pool: [raw_acc, proc_gyro, location, discrete]   # Stage 1 pool (secondary)
+  exclude_patterns: []        # substrings removed from the chosen set (used by sens_motion_dynamics)
+
+roles:                        # per genuine user g, the OTHER cohort members are split:
+  impostor_train: 0.50        #   impostors used to train g's model
+  impostor_cal: 0.25          #   unseen impostors used for calibration (validation)
+  impostor_test: 0.25         #   unseen impostors used for final test (never used before)
+
+classifier:
+  type: hgb                   # HistGradientBoosting, as in exp4_feature_ablation.py
+  params:
+    max_iter: 200
+    learning_rate: 0.1
+    max_depth: 6
+    min_samples_leaf: 50
+    l2_regularization: 1.0
+    class_weight: balanced
+  max_impostor_frames_per_user: 1000   # train-period frames sampled per impostor-train user
+  calibration: platt          # per-user Platt scaling on the VALIDATION period
+
+gate:                         # Exp 1 go/no-go (pre-registered). Failing it stops the pipeline.
+  min_median_test_auc: 0.60
+
+benchmark:
+  W: 5                        # frames; context window and minimum genuine flank (splice spec §4-5)
+  L_frames: [3, 10, 30, 60]   # impostor block lengths (frames = minutes at 60 s cadence)
+  sequences_per_L: 4          # per (genuine user, condition, partition) -> 16 sequences
+  conditions: [X, M]          # X = cross-context, M = context-matched
+  min_stream_frames: 10       # genuine runs shorter than this are not evaluated
+  prefix_cap: 120             # burn-in frames kept before the splice (compute bound)
+  suffix_cap: 60              # genuine frames kept after the impostor block
+  max_attempts: 200
+  context_labels:             # splice spec §4, names verified against the data files
+    - label:SITTING
+    - label:LYING_DOWN
+    - label:FIX_walking
+    - label:FIX_running
+    - label:OR_standing          # spec wrote "STANDING"
+    - label:PHONE_IN_POCKET
+    - label:PHONE_IN_HAND
+    - label:PHONE_ON_TABLE
+    - label:IN_A_CAR
+    - label:LOC_home             # spec wrote "AT_HOME"
+    - label:LOC_main_workplace   # spec wrote "AT_WORK"
+
+mechanisms:
+  primary_set: [threshold, moving_average, ewma, majority_vote, debounce, margin, hysteresis, trust, sprt]
+  supplementary_set: [hmm]
+  initial_state: AUTH         # every session (run) starts authenticated
+  theta_grid: {logit_min: -7.0, logit_max: 7.0, n: 141}
+  grids:
+    moving_average: {k: [2, 3, 5, 10, 20]}
+    ewma: {alpha: [0.05, 0.1, 0.2, 0.3, 0.5, 0.7]}
+    majority_vote: {k: [3, 5, 7, 11]}
+    debounce: {T: [2, 3, 5, 8]}
+    margin: {m: [0.05, 0.1, 0.2, 0.3]}
+    hysteresis: {m: [0.05, 0.1, 0.2, 0.3], T: [2, 3, 5, 8]}
+    trust: {r: [0.05, 0.1, 0.2, 0.5], tau: [0.2, 0.3, 0.5]}
+    sprt: {alpha: [0.001, 0.01, 0.05, 0.1, 0.2], beta: {log10_min: -8.0, log10_max: -0.31, n: 60}}
+    hmm: {rho: [0.0001, 0.001, 0.01, 0.05, 0.1]}
+  density_bins: 20            # SPRT/HMM score densities: histogram on [0,1], Laplace smoothed
+
+metrics:
+  n_sustain: 3                # sustained detection = LOCKED for 3 consecutive frames (or to block end)
+  W_pp: 5                     # ping-pong: interior state episode lasting <= 5 frames
+
+operating_point:
+  criterion: false_locks_per_hour     # genuine false-lock rate (1 / ANGA-time)
+  primary_target: 0.125               # 1 false lock per 8 genuine hours
+  sensitivity_targets: [0.5, 0.0416667]   # 1 per 2 h and 1 per 24 h
+  tolerance: 0.15                     # admissible band: target x [0.85, 1.15]
+  max_lockout_frames: 30              # AMENDMENT A1 (pilot): admissible cells must also have a mean
+                                      # false-lock duration <= 30 frames (30 min); excludes absorbing
+                                      # (never-unlock) configurations. See PREREGISTRATION_FROZEN.md.
+  selection_condition: auto           # auto -> M if coverage >= threshold else X
+  coverage_threshold: 0.80
+
+stats:
+  alpha: 0.05
+  bootstrap_reps: 5000
+  primary_outcome: ania_sustained_median
+  smoother_candidates: [moving_average, ewma, majority_vote, debounce, margin]
+
+runtime:
+  n_jobs: 1
+  log_level: INFO

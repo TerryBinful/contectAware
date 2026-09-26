@@ -1,0 +1,132 @@
+{
+  "unit_of_analysis": "genuine participant",
+  "n_genuine_users": 8,
+  "feature_set": "phone_motion",
+  "n_features": 52,
+  "classifier": {
+    "type": "hgb",
+    "max_iter": 200,
+    "learning_rate": 0.1,
+    "max_depth": 6,
+    "min_samples_leaf": 50,
+    "l2_regularization": 1.0,
+    "class_weight": "balanced"
+  },
+  "calibration": "platt",
+  "test_eer": {
+    "median": 0.08350031712175339,
+    "mean": 0.10231016539844297,
+    "sd": 0.05555669385095838,
+    "min": 0.04330381467310925,
+    "max": 0.1982342257048661
+  },
+  "test_auc": {
+    "median": 0.9773961222989533,
+    "mean": 0.9605174683103719,
+    "sd": 0.040139244674322214,
+    "min": 0.8961160419548939,
+    "max": 0.9920698787918705
+  },
+  "test_far_at_0.5": {
+    "median": 0.06186313544707948,
+    "mean": 0.09279313206972978,
+    "sd": 0.08279059157039081,
+    "min": 0.014057452195931196,
+    "max": 0.2820157189089228
+  },
+  "test_frr_at_0.5": {
+    "median": 0.10192444761225944,
+    "mean": 0.1337706667754222,
+    "sd": 0.1129877650996946,
+    "min": 0.025252525252525252,
+    "max": 0.3606060606060606
+  },
+  "test_brier_balanced": {
+    "median": 0.06573769691663162,
+    "mean": 0.08194561344203072,
+    "sd": 0.03844851153645151,
+    "min": 0.04501377161236048,
+    "max": 0.14988663088773233
+  },
+  "test_genuine_frac_p_le_0.4": {
+    "median": 0.08482673183314665,
+    "mean": 0.10803109664267088,
+    "sd": 0.1017789835887638,
+    "min": 0.01818181818181818,
+    "max": 0.3242424242424242
+  },
+  "test_genuine_frac_band_0.4_0.6": {
+    "median": 0.05343818543345018,
+    "mean": 0.05814853113953167,
+    "sd": 0.0441750683050836,
+    "min": 0.01483216237314598,
+    "max": 0.14369345396487493
+  },
+  "test_impostor_frac_p_ge_0.6": {
+    "median": 0.04717372067235264,
+    "mean": 0.06772470500775868,
+    "sd": 0.06277880274636372,
+    "min": 0.009342530341395268,
+    "max": 0.21248266296809987
+  },
+  "test_impostor_frac_band_0.4_0.6": {
+    "median": 0.042852874162859,
+    "mean": 0.05563649752531442,
+    "sd": 0.03690180308141578,
+    "min": 0.013970138828254606,
+    "max": 0.1306518723994452
+  },
+  "val_eer": {
+    "median": 0.08982120153189452,
+    "mean": 0.09946083176248374,
+    "sd": 0.03286046837122017,
+    "min": 0.06079261313295305,
+    "max": 0.17039715774667188
+  },
+  "val_auc": {
+    "median": 0.9771898049751997,
+    "mean": 0.9689420900308576,
+    "sd": 0.02154812749656649,
+    "min": 0.9185714952935344,
+    "max": 0.9860140579078525
+  },
+  "test_transitions_per_hour_at_0.5": {
+    "median": 5.615559052776367,
+    "mean": 4.946856851146103,
+    "sd": 2.643845022265767,
+    "min": 1.3333333333333333,
+    "max": 9.260244811069718
+  },
+  "test_frac_within_90s_of_train": {
+    "median": 0.0,
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0
+  },
+  "val_frac_within_90s_of_train": {
+    "median": 0.0,
+    "mean": 0.0,
+    "sd": 0.0,
+    "min": 0.0,
+    "max": 0.0
+  },
+  "validity_checks": {
+    "impostor_roles_disjoint": true,
+    "preprocessing_fit_on_training_rows_only": true,
+    "calibration_fit_on_validation_only": true,
+    "smote_used": false,
+    "max_frac_test_frames_within_90s_of_train": 0.0,
+    "stage1_reference": {
+      "closed_set_impostors": "59/59 seen",
+      "frac_test_within_90s_of_train": 0.957,
+      "genuine_band_0.4_0.6": 0.0284,
+      "transitions_per_hour": 2.685318459877654
+    }
+  },
+  "gate": {
+    "criterion": "median per-user test AUC >= 0.6",
+    "value": 0.9773961222989533,
+    "passed": true
+  }
+}

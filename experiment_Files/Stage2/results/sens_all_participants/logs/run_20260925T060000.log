@@ -1,0 +1,42 @@
+2026-09-25 06:00:00 | INFO    | Experiment stage2_mechanism_comparison-sens_all_participants-d5740075 | config configs/sens_all_participants.yaml | results /home/claude/contectAware/experiment_Files/Stage2/results/sens_all_participants | work /home/claude/contectAware/experiment_Files/Stage2/work/sens_all_participants/d57400752a3e
+2026-09-25 06:00:00 | INFO    | === stage audit: start
+2026-09-25 06:00:00 | INFO    | audit: checkpoint found
+2026-09-25 06:00:00 | INFO    | === stage audit: done in 0.0s
+2026-09-25 06:00:00 | INFO    | === stage split: start
+2026-09-25 06:00:00 | INFO    | === stage split: done in 0.0s
+2026-09-25 06:00:00 | INFO    | === stage scoring: start
+2026-09-25 06:00:00 | INFO    | === stage scoring: done in 0.0s
+2026-09-25 06:00:00 | INFO    | === stage benchmark: start
+2026-09-25 06:00:00 | INFO    | === stage benchmark: done in 0.0s
+2026-09-25 06:00:00 | INFO    | === stage sweep_val: start
+2026-09-25 06:00:02 | INFO    | sweep val/threshold: cached (141 cells)
+2026-09-25 06:00:03 | INFO    | sweep val/moving_average: cached (705 cells)
+2026-09-25 06:00:03 | INFO    | sweep val/ewma: cached (846 cells)
+2026-09-25 06:00:03 | INFO    | sweep val/majority_vote: cached (564 cells)
+2026-09-25 06:00:03 | INFO    | sweep val/debounce: cached (564 cells)
+2026-09-25 06:00:03 | INFO    | sweep val/margin: cached (564 cells)
+2026-09-25 06:00:27 | INFO    | sweep val/hysteresis: 2256 cells in 24.4s
+2026-09-25 06:00:41 | INFO    | sweep val/trust: 1692 cells in 13.9s
+2026-09-25 06:00:45 | INFO    | sweep val/sprt: 300 cells in 3.8s
+2026-09-25 06:00:47 | INFO    | sweep val/hmm: 705 cells in 2.5s
+2026-09-25 06:00:48 | INFO    | === stage sweep_val: done in 47.7s
+2026-09-25 06:00:48 | INFO    | === stage select: start
+2026-09-25 06:00:48 | INFO    | Operating points frozen (sha256 4ff036902a48). Best smoother on validation: margin
+2026-09-25 06:00:48 | INFO    | === stage select: done in 0.3s
+2026-09-25 06:00:49 | INFO    | === stage evaluate: start
+2026-09-25 06:01:00 | INFO    | sweep test/threshold: 141 cells in 0.4s
+2026-09-25 06:01:02 | INFO    | sweep test/moving_average: 705 cells in 2.3s
+2026-09-25 06:01:05 | INFO    | sweep test/ewma: 846 cells in 2.9s
+2026-09-25 06:01:17 | INFO    | sweep test/majority_vote: 564 cells in 12.0s
+2026-09-25 06:01:22 | INFO    | sweep test/debounce: 564 cells in 5.6s
+2026-09-25 06:01:27 | INFO    | sweep test/margin: 564 cells in 4.4s
+2026-09-25 06:01:51 | INFO    | sweep test/hysteresis: 2256 cells in 24.3s
+2026-09-25 06:02:05 | INFO    | sweep test/trust: 1692 cells in 13.7s
+2026-09-25 06:02:08 | INFO    | sweep test/sprt: 300 cells in 3.7s
+2026-09-25 06:02:11 | INFO    | sweep test/hmm: 705 cells in 2.5s
+2026-09-25 06:02:11 | INFO    | === stage evaluate: done in 82.3s
+2026-09-25 06:02:11 | INFO    | === stage stats: start
+2026-09-25 06:02:13 | INFO    | === stage stats: done in 2.2s
+2026-09-25 06:02:14 | INFO    | === stage report: start
+2026-09-25 06:02:20 | INFO    | Dataset found: 60 participant files in /home/claude/data/raw
+2026-09-25 06:02:20 | INFO    | === stage report: done in 5.9s

@@ -1,0 +1,10 @@
+category,n_features,pooled_missing_mean,in_stage1_selected,in_primary
+audio_ambient,28,0.025008309917915424,0,0
+device_state,26,0.0,5,26
+environment_device,8,0.5779201979085508,0,0
+location,17,0.26884687824343456,13,17
+magnetometer,31,0.0831660786036534,0,0
+phone_motion,52,0.023760227809694348,34,52
+time_of_day,8,0.0,0,8
+watch_heading,9,0.609337319065261,0,0
+watch_motion,46,0.3512532264817965,0,0

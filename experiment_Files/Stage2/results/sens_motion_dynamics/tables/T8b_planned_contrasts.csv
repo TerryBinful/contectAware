@@ -1,0 +1,22 @@
+family,outcome,comparison,n_users,median_a,median_b,median_diff,ci_lo,ci_hi,p_value,p_holm,rank_biserial,significant
+primary,ania,hysteresis - debounce (best smoother on validation),33,1.5,2.5,-1.0,-1.0,0.0,0.0010327443569763,0.0010327443569763,-0.7236467236467237,True
+primary_secondary_outcomes,first_lock,hysteresis - debounce (best smoother on validation),33,1.5,2.5,-1.0,-1.0,0.0,9.141210167312069e-05,0.0006398847117118,-0.89,True
+primary_secondary_outcomes,recovery,hysteresis - debounce (best smoother on validation),33,1.0,2.0,-1.0,-1.0,-1.0,2.755902266502812e-05,0.0002204721813202,-0.8206896551724138,True
+primary_secondary_outcomes,miss_rate,hysteresis - debounce (best smoother on validation),33,0.25,0.25,0.0,-0.0625,0.0,0.1629907448840757,0.9779444693044544,-0.3376623376623376,False
+primary_secondary_outcomes,far_frame,hysteresis - debounce (best smoother on validation),33,0.4,0.4854166666666666,-0.0729166666666666,-0.0999999999999999,-0.0427083333333334,4.048924893140793e-07,3.6440324038267136e-06,-0.8966131907308378,True
+primary_secondary_outcomes,frr_time,hysteresis - debounce (best smoother on validation),33,0.0159216166564605,0.0144092219020172,0.0,-0.0005197505197504,0.0009689922480619,0.3157546761755551,1.0,0.225071225071225,False
+primary_secondary_outcomes,false_locks_per_hour,hysteresis - debounce (best smoother on validation),33,0.1102265768524188,0.1349325337331334,0.0,-0.0307062436028659,0.0,0.7151447551766743,1.0,-0.0909090909090909,False
+primary_secondary_outcomes,transitions_per_hour,hysteresis - debounce (best smoother on validation),33,0.1975308641975308,0.2698650674662669,0.0,-0.0936768149882904,0.0,0.6848744008735368,1.0,-0.0988142292490118,False
+primary_secondary_outcomes,pingpong_per_hour,hysteresis - debounce (best smoother on validation),33,0.0493827160493827,0.0777705767984446,0.0,-0.035820895522388,0.0,0.7842886020465609,1.0,-0.0652173913043478,False
+primary_secondary_outcomes,lockout_mean_frames,hysteresis - debounce (best smoother on validation),26,8.895833333333332,7.05,0.2583333333333333,-1.2916666666666663,2.225000000000001,0.2637181352326514,1.0,0.2507122507122507,False
+H3_component_ablation,ania,hysteresis - margin,33,1.5,3.0,0.0,-2.0,0.0,0.0154351808939906,0.0154351808939906,-0.5413105413105413,True
+H3_component_ablation,ania,hysteresis - debounce,33,1.5,2.5,-1.0,-1.0,0.0,0.0010327443569763,0.0020654887139527,-0.7236467236467237,True
+H4_context_matching,ania,threshold: M - X,33,3.0,3.0,1.0,0.0,2.5,0.0540569614486712,0.4865126530380411,0.4091954022988506,False
+H4_context_matching,ania,moving_average: M - X,33,2.5,2.5,0.0,-0.5,0.5,0.4722355205701204,1.0,0.163076923076923,False
+H4_context_matching,ania,ewma: M - X,33,3.0,2.5,0.0,-0.5,1.0,0.3683190000703947,1.0,0.1908045977011494,False
+H4_context_matching,ania,majority_vote: M - X,33,2.5,2.0,0.5,0.0,0.5,0.3138963757952443,1.0,0.2167487684729064,False
+H4_context_matching,ania,debounce: M - X,33,2.5,2.0,0.0,0.0,0.5,0.1044702818834123,0.6268216913004743,0.3982683982683982,False
+H4_context_matching,ania,margin: M - X,33,3.0,1.5,0.5,0.0,2.0,0.0693323806416637,0.5546590451333097,0.3994708994708995,False
+H4_context_matching,ania,hysteresis: M - X,33,1.5,1.5,0.0,0.0,1.0,0.2344417870618935,1.0,0.2766666666666666,False
+H4_context_matching,ania,trust: M - X,33,3.0,3.0,0.0,0.0,1.0,0.0856063874917508,0.5992447124422556,0.3907692307692307,False
+H4_context_matching,ania,sprt: M - X,33,1.5,1.5,0.5,0.0,1.0,0.2360393747626924,1.0,0.2592592592592592,False

@@ -1,0 +1,9 @@
+# PILOT — same protocol as main.yaml on a seeded subset of genuine users (impostor pools are the
+# full cohort). Purpose: verify the pipeline end to end and estimate runtime before the full run.
+# Pilot results are NOT evidence; they are labelled status: pilot everywhere.
+extends: main.yaml
+experiment:
+  label: pilot
+  status: pilot
+cohort:
+  max_genuine_users: 8

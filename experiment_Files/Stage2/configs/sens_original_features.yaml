@@ -1,0 +1,6 @@
+# SENSITIVITY — Stage 1 feature pool (phone motion + location + discrete/device-state), everything
+# else identical to main.yaml. Quantifies how much the context/device shortcuts identified in Stage 1
+# change the score stream and the mechanism comparison. Not a primary result.
+extends: main.yaml
+experiment: {label: sens_original_features, status: sensitivity}
+features: {set: original_pool}

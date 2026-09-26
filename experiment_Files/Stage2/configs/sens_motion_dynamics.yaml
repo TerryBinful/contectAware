@@ -1,0 +1,8 @@
+# SENSITIVITY — phone motion WITHOUT absolute-level features (magnitude mean/percentiles, per-axis
+# means, lowest spectral band). These carry resting orientation and sensor calibration offsets, i.e.
+# potential DEVICE fingerprints: every ExtraSensory participant used their own phone, whereas a real
+# impostor would use the victim's device. Not a primary result.
+extends: main.yaml
+experiment: {label: sens_motion_dynamics, status: sensitivity}
+features:
+  exclude_patterns: ["magnitude_stats:mean", "magnitude_stats:percentile", "3d:mean_", "log_energy_band0"]
